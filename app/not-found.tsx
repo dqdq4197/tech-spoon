@@ -10,14 +10,14 @@ export default function NotFound() {
       </div>
       <div className="max-w-md">
         <p className="mb-4 text-xl leading-normal font-bold md:text-2xl">
-          Sorry we couldn't find this page.
+          죄송해요, 요청하신 페이지를 찾을 수 없어요.
         </p>
-        <p className="mb-8">But dont worry, you can find plenty of other things on our homepage.</p>
+        <p className="mb-8">하지만 괜찮아요! 홈페이지에서 다양한 콘텐츠를 만나보실 수 있어요.</p>
         <Link
           href="/"
           className="focus:shadow-outline-blue inline rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm leading-5 font-medium text-white shadow-xs transition-colors duration-150 hover:bg-blue-700 focus:outline-hidden dark:hover:bg-blue-500"
         >
-          Back to homepage
+          홈페이지로 돌아가기
         </Link>
       </div>
     </div>
