@@ -1,7 +1,11 @@
 @import 'tailwindcss';
+@import './typography.css';
+
 @plugin "@tailwindcss/forms";
 @plugin '@tailwindcss/typography';
+
 @source '../node_modules/pliny';
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Core theme configuration */
@@ -100,7 +104,6 @@
       color: var(--color-indigo-500);
     }
   }
-
   .prose-invert {
     & a {
       color: var(--color-primary-500);
@@ -114,6 +117,17 @@
     & :where(h1, h2, h3, h4, h5, h6) {
       color: var(--color-gray-100);
     }
+  }
+}
+
+@utility hide-scrollbar {
+  /* IE and Edge */
+  -ms-overflow-style: none;
+  /* Firefox */
+  scrollbar-width: none;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -135,15 +149,6 @@
 
 .csl-entry {
   @apply my-5;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */

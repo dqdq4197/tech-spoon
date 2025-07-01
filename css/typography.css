@@ -1,0 +1,155 @@
+@utility typo-h1 {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-h2 {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-h3 {
+  font-size: 1.125rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-h4 {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-h5 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-h6 {
+  font-size: 0.813rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-bold12 {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-bold11 {
+  font-size: 0.688rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-bold10 {
+  font-size: 0.625rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-bold9 {
+  font-size: 0.563rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+@utility typo-body1 {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body2 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body3 {
+  font-size: 0.813rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body4 {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body5 {
+  font-size: 0.688rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body6 {
+  font-size: 0.625rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body7 {
+  font-size: 0.563rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-body8 {
+  font-size: 0.5rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@utility typo-caption2 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-caption3 {
+  font-size: 0.813rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-caption4 {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-caption5 {
+  font-size: 0.688rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-caption6 {
+  font-size: 0.625rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-caption7 {
+  font-size: 0.563rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-caption8 {
+  font-size: 0.5rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@utility typo-unset {
+  font-size: unset;
+  line-height: unset;
+  font-weight: unset;
+}
