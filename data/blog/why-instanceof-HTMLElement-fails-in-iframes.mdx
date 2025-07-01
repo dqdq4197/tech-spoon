@@ -1,0 +1,70 @@
+---
+title: '왜 instanceof HTMLElement가 false일까? - iframe과 다중 전역 객체 이슈'
+date: '2025-07-01'
+lastmod: '2025-07-01'
+tags: ['typescript']
+draft: false
+summary: '같은 DOM인데 instanceof가 false라고? 알고 보면 iframe은 자기만의 세상이 있어요.'
+images: ['/static/images/twitter-card.png']
+---
+
+#### **❗ iframe에서 instanceof HTMLElement가 실패하는 이유**
+
+자바스크립트에서 `instanceof HTMLElement`로 타입 검사를 할 때, 의외로 실패하는 경우가 있다.
+
+특히 **iframe이나 window.open()으로 생성된 다른 전역 객체(global object)**에서 DOM 요소가 만들어졌을 경우 그렇다.
+
+```
+const iframe = document.createElement("iframe");
+document.body.appendChild(iframe);
+
+// iframe 내부 문서 접근
+const iframeDoc = iframe.contentWindow.document;
+
+// iframe 내부에서 div 생성
+const div = iframeDoc.createElement("div");
+
+// ❌ 다른 전역 객체에서 생성된 div이므로 현재 window의 HTMLElement와 다름
+console.log(div instanceof HTMLElement); // false
+
+// ✅ iframe 내부의 전역 객체에서 생성된 HTMLElement 기준으로 검사해야 true
+console.log(div instanceof iframe.contentWindow.HTMLElement); // true
+```
+
+자바스크립트에서 instanceof가 동작하는 방식을 살펴보면 다음과 같다.
+
+```
+a instanceof B
+```
+
+위 로직은 내부적으로 `B.prototype`이 `a`의 프로토타입 체인([[Prototype]])에 포함되어 있는지를 검사한다.
+
+그런데 `iframe`이나 `window.open()` 등을 통해 생성된 문서(document)는 각각 **독립적인 전역 객체(window)**를 가지고 있으며, 그에 따라 내장 생성자들(Object, Array, HTMLElement 등)도 별도로 존재한다.
+
+이로 인해 해당 전역 객체에서 생성된 객체는 현재 window의 생성자와는 **서로 다른 프로토타입 체인을 가지게 되며**, 그 결과 instanceof 검사가 실패할 수 있게된다.
+
+#### ✅ **다중 전역 객체 환경, 안전한 타입 검사 방법: ownerDocument를 통해 해결하는 원리**
+
+DOM 요소는 항상 **ownerDocument**를 가진다.
+
+이걸 통해 해당 요소가 속한 문서(Document)를 알 수 있고, 그 문서가 속한 전역 객체는 다음처럼 접근할 수 있다.
+
+```
+el.ownerDocument.defaultView // 해당 요소가 실제로 속한 window
+```
+
+따라서 다음과 같이 검사하게 되면 항상 **정확한 타입 검사**가 가능하게 된다.
+
+```
+el instanceof el.ownerDocument.defaultView.HTMLElement // ✅ true
+```
+
+> el이 속한 문서의 window (defaultView)에서 HTMLElement를 가져오고 그 전역 객체의 HTMLElement.prototype과 비교하기 때문에
+
+이를 활용하면 다중 전역 객체 환경에서도 안전한 HTMLElement 타입 검사 함수를 작성해 사용할 수 있다.
+
+```
+function isHTMLElement(el) {
+  return el instanceof (el?.ownerDocument?.defaultView?.HTMLElement || HTMLElement);
+}
+```
