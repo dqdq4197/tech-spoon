@@ -1,6 +1,6 @@
-import { MetadataRoute } from 'next'
-import { allBlogs } from 'contentlayer/generated'
 import siteMetadata from '@/data/siteMetadata'
+import { allBlogs } from 'contentlayer/generated'
+import { MetadataRoute } from 'next'
 
 export const dynamic = 'force-static'
 
@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: post.lastmod || post.date,
     }))
 
-  const routes = ['', 'blog', 'projects', 'tags'].map((route) => ({
+  const routes = ['', 'blog', 'tags'].map((route) => ({
     url: `${siteUrl}/${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }))
