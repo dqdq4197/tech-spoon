@@ -3,7 +3,7 @@ import path from 'path'
 import { slug } from 'github-slugger'
 import { escape } from 'pliny/utils/htmlEscaper.js'
 import siteMetadata from '../data/siteMetadata.js'
-import tagData from '../app/tag-data.json' with { type: 'json' }
+import tagData from '../src/app/tag-data.json' with { type: 'json' }
 import { allBlogs } from '../.contentlayer/generated/index.mjs'
 import { sortPosts } from 'pliny/utils/contentlayer.js'
 
@@ -57,6 +57,7 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
 }
 
 const rss = () => {
+  console.log('siteMetadata', siteMetadata)
   generateRSS(siteMetadata, allBlogs)
   console.log('RSS feed generated...')
 }

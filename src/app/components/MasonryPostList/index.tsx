@@ -1,6 +1,6 @@
 'use client'
 
-import type { Post } from 'app/types'
+import type { Post } from '@/app/types'
 import React from 'react'
 import Masonry, { type MasonryProps } from 'react-masonry-css'
 import PostCard from './PostCard'

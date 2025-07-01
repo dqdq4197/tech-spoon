@@ -1,4 +1,4 @@
-import type { Post } from 'app/types'
+import type { Post } from '@/app/types'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'

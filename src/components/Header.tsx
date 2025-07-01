@@ -1,9 +1,9 @@
-import headerNavLinks from '@/data/headerNavLinks'
 import siteMetadata from '@/data/siteMetadata'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
 import ThemeSwitch from './ThemeSwitch'
+import headerNavLinks from '@/data/headerNavLinks'
 
 const Header = () => {
   let headerClass = 'flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10'

@@ -17,10 +17,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
+      "@/*": ["./src/*"],
       "@/data/*": ["data/*"],
-      "@/layouts/*": ["layouts/*"],
-      "@/css/*": ["css/*"],
       "contentlayer/generated": ["./.contentlayer/generated"],
       "pliny/*": ["node_modules/pliny/*"]
     },

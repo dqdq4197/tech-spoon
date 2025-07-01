@@ -7,8 +7,8 @@ import {
   cloneElement,
   forwardRef,
 } from 'react'
-import type { PolymorphicComponentProps, RefObjectOf } from 'types/polymorphic'
-import { cn } from 'utils'
+import type { PolymorphicComponentProps, RefObjectOf } from '@/types/polymorphic'
+import { cn } from '@/utils'
 
 /**
  * Return an array with the separator React element interspersed between
