@@ -1,4 +1,5 @@
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
+import unusedImports from 'eslint-plugin-unused-imports'
 import globals from 'globals'
 import tsParser from '@typescript-eslint/parser'
 import path from 'node:path'
@@ -12,6 +13,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 })
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
     ignores: [],
@@ -28,6 +30,7 @@ export default [
   {
     plugins: {
       '@typescript-eslint': typescriptEslint,
+      'unused-imports': unusedImports,
     },
 
     languageOptions: {
@@ -65,6 +68,18 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
 ]

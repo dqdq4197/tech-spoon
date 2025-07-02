@@ -13,11 +13,11 @@ function PostCard(props: Props) {
   const thumnail = images && images[0]
 
   // 날짜 형식을 보기 좋게 변환합니다. (예: August 5, 2023)
-  const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  // const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric',
+  // })
 
   return (
     <Link href={`/${path}`}>
