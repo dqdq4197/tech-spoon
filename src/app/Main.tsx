@@ -2,8 +2,8 @@ import Link from '@/components/Link'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import MasonryPostList from './components/MasonryPostList'
-import { Blog } from 'contentlayer/generated'
-import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Blog } from 'contentlayer/generated'
+import type { CoreContent } from 'pliny/utils/contentlayer'
 const MAX_DISPLAY = 5
 
 interface Props {
