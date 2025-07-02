@@ -25,6 +25,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from '@/data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+import type { Blog } from 'contentlayer/generated'
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -62,21 +63,32 @@ const computedFields: ComputedFields = {
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
-async function createTagCount(allBlogs) {
-  const tagCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
-    if (file.tags && (!isProduction || file.draft !== true)) {
-      file.tags.forEach((tag) => {
-        const formattedTag = slug(tag)
-        if (formattedTag in tagCount) {
-          tagCount[formattedTag] += 1
-        } else {
-          tagCount[formattedTag] = 1
-        }
-      })
-    }
+async function createTagCount(allBlogs: Blog[]) {
+  const tagCount = allBlogs
+    .filter((post) => !isProduction || !post.draft)
+    .flatMap((post) => post.tags)
+    .map((tag) => slug(tag))
+    .reduce<Record<string, number>>((acc, tag) => {
+      acc[tag] = (acc[tag] || 0) + 1
+      return acc
+    }, {})
+
+  const sortedTagCount = Object.fromEntries(
+    Object.entries(tagCount).sort(([tagA, countA], [tagB, countB]) => {
+      const countDifference = countB - countA
+
+      if (countDifference !== 0) {
+        return countDifference
+      }
+
+      return tagA.localeCompare(tagB)
+    })
+  )
+
+  const formatted = await prettier.format(JSON.stringify(sortedTagCount, null, 2), {
+    parser: 'json',
   })
-  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
+
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
@@ -93,7 +105,7 @@ function createSearchIndex(allBlogs) {
   }
 }
 
-export const Blog = defineDocumentType(() => ({
+export const Blogs = defineDocumentType(() => ({
   name: 'Blog',
   filePathPattern: 'blog/**/*.mdx',
   contentType: 'mdx',
@@ -149,7 +161,7 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blogs, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
