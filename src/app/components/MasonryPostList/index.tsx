@@ -11,8 +11,8 @@ interface Props {
 
 const breakpointCols = {
   default: 3,
-  700: 2,
-  500: 1,
+  1000: 2,
+  650: 1,
 } satisfies MasonryProps['breakpointCols']
 
 function MasonryPostList(props: Props) {
@@ -26,7 +26,6 @@ function MasonryPostList(props: Props) {
         columnClassName="bg-clip-padding"
       >
         {posts.map((post) => (
-          // 각 블로그 포스트 데이터를 BlogPostItem 컴포넌트에 prop으로 전달합니다.
           <PostCard key={post.slug} post={post} />
         ))}
       </Masonry>
