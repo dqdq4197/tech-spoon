@@ -92,17 +92,9 @@ async function createTagCount(allBlogs: Blog[]) {
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
-function createSearchIndex(allBlogs) {
-  if (
-    siteMetadata?.search?.provider === 'kbar' &&
-    siteMetadata.search.kbarConfig.searchDocumentsPath
-  ) {
-    writeFileSync(
-      `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
-    )
-    console.log('Local search index generated...')
-  }
+function createSearchIndex(allBlogs: Blog[]) {
+  writeFileSync(`public/search.json`, JSON.stringify(allCoreContent(sortPosts(allBlogs))))
+  console.log('Local search index generated...')
 }
 
 export const Blogs = defineDocumentType(() => ({
@@ -116,7 +108,7 @@ export const Blogs = defineDocumentType(() => ({
     lastmod: { type: 'date' },
     draft: { type: 'boolean' },
     summary: { type: 'string' },
-    images: { type: 'json' },
+    images: { type: 'list', of: { type: 'string' } },
     authors: { type: 'list', of: { type: 'string' } },
     layout: { type: 'string' },
     bibliography: { type: 'string' },

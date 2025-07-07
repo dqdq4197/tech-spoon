@@ -1,34 +1,33 @@
-import { AlgoliaButton } from 'pliny/search/AlgoliaButton'
 import { KBarButton } from 'pliny/search/KBarButton'
-import siteMetadata from '@/data/siteMetadata'
+import { SearchProvider } from 'pliny/search'
 
-const SearchButton = () => {
-  if (
-    siteMetadata.search &&
-    (siteMetadata.search.provider === 'algolia' || siteMetadata.search.provider === 'kbar')
-  ) {
-    const SearchButtonWrapper =
-      siteMetadata.search.provider === 'algolia' ? AlgoliaButton : KBarButton
-
-    return (
-      <SearchButtonWrapper aria-label="Search">
+function SearchButton() {
+  return (
+    <SearchProvider
+      searchConfig={{
+        provider: 'kbar',
+        kbarConfig: { searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json` },
+      }}
+    >
+      <KBarButton
+        aria-label="Search"
+        className="inline-flex items-center gap-1 rounded-full bg-gray-950/2 px-2 py-1 inset-ring inset-ring-gray-950/8 dark:bg-white/5 dark:inset-ring-white/2"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="hover:text-primary-500 dark:hover:text-primary-400 h-6 w-6 text-gray-900 dark:text-gray-100"
+          viewBox="0 0 16 16"
+          className="-ml-0.5 size-4 fill-gray-600 dark:fill-gray-500"
         >
           <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
           />
         </svg>
-      </SearchButtonWrapper>
-    )
-  }
+        <kbd className="typo-body4 block font-sans text-gray-500 dark:text-gray-400">⌘K</kbd>
+      </KBarButton>
+    </SearchProvider>
+  )
 }
 
 export default SearchButton
