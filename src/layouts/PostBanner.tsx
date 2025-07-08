@@ -5,7 +5,6 @@ import Comments from '@/components/Comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
-import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 import type { ReactNode } from 'react'
@@ -49,7 +48,7 @@ export default function PostBanner({ content, next, prev, children }: LayoutProp
                 <div className="pt-4 xl:pt-8">
                   <Link
                     href={`/${prev.path}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
                     aria-label={`Previous post: ${prev.title}`}
                   >
                     &larr; {prev.title}
@@ -60,7 +59,7 @@ export default function PostBanner({ content, next, prev, children }: LayoutProp
                 <div className="pt-4 xl:pt-8">
                   <Link
                     href={`/${next.path}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
                     aria-label={`Next post: ${next.title}`}
                   >
                     {next.title} &rarr;

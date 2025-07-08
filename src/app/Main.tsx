@@ -4,6 +4,7 @@ import NewsletterForm from 'pliny/ui/NewsletterForm'
 import MasonryPostList from './components/MasonryPostList'
 import type { Blog } from 'contentlayer/generated'
 import type { CoreContent } from 'pliny/utils/contentlayer'
+
 const MAX_DISPLAY = 5
 
 interface Props {
@@ -25,10 +26,10 @@ function Home(props: Props) {
         <MasonryPostList posts={posts} />
       </div>
       {posts.length > MAX_DISPLAY && (
-        <div className="flex justify-end text-base leading-6 font-medium">
+        <div className="flex justify-end">
           <Link
             href="/blog"
-            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+            className="typo-body1 text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
             aria-label="All posts"
           >
             All Posts &rarr;

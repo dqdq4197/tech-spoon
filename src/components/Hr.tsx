@@ -17,7 +17,7 @@ export const hrVariants = cva('border-0', {
       default: 'border-white/12',
       white80: 'border-white/80',
       white30: 'border-white/30',
-      primary: 'border-primary-100',
+      primary: 'border-brand-100',
       shade: 'border-white/5',
     },
   },
