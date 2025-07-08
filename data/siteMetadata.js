@@ -4,7 +4,6 @@ const siteMetadata = {
   author: 'heesu',
   description: '크게 한 스푼 담은, 소화 잘 되는 기술 이야기',
   language: 'ko',
-  theme: 'system', // system, dark or light
   siteUrl: 'https://dqdq4197.github.io/tech-spoon/',
   siteRepo: 'https://github.com/dqdq4197/tech-spoon',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
