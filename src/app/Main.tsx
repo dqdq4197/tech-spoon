@@ -17,10 +17,15 @@ function Home(props: Props) {
   return (
     <>
       <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-        <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
+        <div className="pointer-events-none fixed inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 h-96 w-96 animate-pulse rounded-full bg-purple-500/20 blur-3xl"></div>
+          <div className="absolute right-1/4 bottom-1/4 h-80 w-80 animate-pulse rounded-full bg-blue-500/20 blur-3xl delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 h-64 w-64 animate-pulse rounded-full bg-pink-500/20 blur-3xl delay-500"></div>
+        </div>
+        <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14 dark:text-gray-100">
           Posts
         </h1>
-        <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+        <p className="typo-body1 text-greyOpacity-80 dark:text-white-80">
           {siteMetadata.description}
         </p>
         <MasonryPostList posts={posts} />

@@ -6395,6 +6395,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^12.23.0":
+  version: 12.23.0
+  resolution: "framer-motion@npm:12.23.0"
+  dependencies:
+    motion-dom: ^12.22.0
+    motion-utils: ^12.19.0
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 0f5f18bc66b11f6d9b7b294cf7723479f0a313d1afcbab54786ed25e40da49734f53b960a4abe95d08b138736f84c11cacd007113adf755217b6a6200d49ad78
+  languageName: node
+  linkType: hard
+
 "fs-minipass@npm:^3.0.0":
   version: 3.0.3
   resolution: "fs-minipass@npm:3.0.3"
@@ -9189,6 +9211,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"motion-dom@npm:^12.22.0":
+  version: 12.22.0
+  resolution: "motion-dom@npm:12.22.0"
+  dependencies:
+    motion-utils: ^12.19.0
+  checksum: c632fe2a1d75d57ac261a6d36c84c1bb7fd3ae34241256f9a84ee148420d60bd7919e1ec15fe7828ff7718400aa0b2be96a2bc230a621eb6777b2d28d74090be
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.19.0":
+  version: 12.19.0
+  resolution: "motion-utils@npm:12.19.0"
+  checksum: f0e6a10b0fbc65db10d537c91dd2dd2928fadedd9c45f69c24f2be9d5123e200e109467580d248fb6b4d983877377e0cec8aa8cc167a4c0416679ea6648f4db5
+  languageName: node
+  linkType: hard
+
+"motion@npm:^12.23.0":
+  version: 12.23.0
+  resolution: "motion@npm:12.23.0"
+  dependencies:
+    framer-motion: ^12.23.0
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 0675dbae44f799476cc9eb1a7de7332c717e279bbcfcc9e5045590772b45a0813f8e09006bbe114694a6095b07369c5ec10daa7b974b6d96908a6ab7ab9270ae
+  languageName: node
+  linkType: hard
+
 "mrmime@npm:^2.0.0":
   version: 2.0.0
   resolution: "mrmime@npm:2.0.0"
@@ -11742,6 +11801,7 @@ __metadata:
     husky: ^9.0.0
     image-size: 2.0.1
     lint-staged: ^13.0.0
+    motion: ^12.23.0
     next: 15.2.4
     next-contentlayer2: 0.5.5
     next-themes: ^0.4.6
