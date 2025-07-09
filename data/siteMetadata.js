@@ -6,7 +6,6 @@ const siteMetadata = {
   language: 'ko',
   siteUrl: 'https://dqdq4197.github.io/tech-spoon/',
   siteRepo: 'https://github.com/dqdq4197/tech-spoon',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   email: 'dqdq4197@gmail.com',
   github: 'https://github.com/dqdq4197',

@@ -8,6 +8,7 @@ import Stack from '@/components/Stack'
 import SearchButton from '@/app/components/Navbar/SearchButton'
 import ThemeSwitch from '@/app/components/Navbar/ThemeSwitch'
 import MobileNav from '@/app/components/Navbar/MobileNav'
+import { IcTechSpoon } from 'public/static/icons/Logo'
 
 const Header = () => {
   const isScrolled = useScrolled()
@@ -20,8 +21,8 @@ const Header = () => {
       )}
     >
       <Stack className="w-5xl flex-row justify-between px-6">
-        <Link href="/" aria-label="Tech Spoon" className="flex items-center">
-          <span className="typo-h2">Tech Spoon</span>
+        <Link href="/" className="flex items-center">
+          <IcTechSpoon width={120} className="dark:text-white-100 text-grey-100" />
         </Link>
         <div className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6">
           <div className="hidden items-center gap-x-4 sm:flex">
