@@ -25,7 +25,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from '@/data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
-import type { Blog } from 'contentlayer/generated'
+import type { Article } from 'contentlayer/generated'
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -63,8 +63,8 @@ const computedFields: ComputedFields = {
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
-async function createTagCount(allBlogs: Blog[]) {
-  const tagCount = allBlogs
+async function createTagCount(articles: Article[]) {
+  const tagCount = articles
     .filter((post) => !isProduction || !post.draft)
     .flatMap((post) => post.tags)
     .map((tag) => slug(tag))
@@ -92,14 +92,14 @@ async function createTagCount(allBlogs: Blog[]) {
   writeFileSync('./src/app/tag-data.json', formatted)
 }
 
-function createSearchIndex(allBlogs: Blog[]) {
-  writeFileSync(`public/search.json`, JSON.stringify(allCoreContent(sortPosts(allBlogs))))
+function createSearchIndex(articles: Article[]) {
+  writeFileSync(`public/search.json`, JSON.stringify(allCoreContent(sortPosts(articles))))
   console.log('Local search index generated...')
 }
 
-export const Blogs = defineDocumentType(() => ({
-  name: 'Blog',
-  filePathPattern: 'blog/**/*.mdx',
+export const Articles = defineDocumentType(() => ({
+  name: 'Article',
+  filePathPattern: 'articles/**/*.mdx',
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -153,7 +153,7 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blogs, Authors],
+  documentTypes: [Articles, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
@@ -184,8 +184,8 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
-    createTagCount(allBlogs)
-    createSearchIndex(allBlogs)
+    const { allArticles } = await importData()
+    createTagCount(allArticles)
+    createSearchIndex(allArticles)
   },
 })

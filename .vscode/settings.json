@@ -14,5 +14,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "cSpell.words": ["kbar", "Giscus"]
+  "cSpell.words": ["contentlayer", "Giscus", "kbar"]
 }

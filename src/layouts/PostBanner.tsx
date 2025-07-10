@@ -1,6 +1,6 @@
 import Image from '@/components/Image'
 import Bleed from 'pliny/ui/Bleed'
-import type { Blog } from 'contentlayer/generated'
+import type { Article } from 'contentlayer/generated'
 import Comments from '@/components/Comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
@@ -10,7 +10,7 @@ import type { CoreContent } from 'pliny/utils/contentlayer'
 import type { ReactNode } from 'react'
 
 interface LayoutProps {
-  content: CoreContent<Blog>
+  content: CoreContent<Article>
   children: ReactNode
   next?: { path: string; title: string }
   prev?: { path: string; title: string }

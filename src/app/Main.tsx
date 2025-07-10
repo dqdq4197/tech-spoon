@@ -2,13 +2,13 @@ import Link from '@/components/Link'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import MasonryPostList from './components/MasonryPostList'
-import type { Blog } from 'contentlayer/generated'
+import type { Article } from 'contentlayer/generated'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 
 const MAX_DISPLAY = 5
 
 interface Props {
-  posts: CoreContent<Blog>[]
+  posts: CoreContent<Article>[]
 }
 
 function Home(props: Props) {
@@ -33,11 +33,11 @@ function Home(props: Props) {
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end">
           <Link
-            href="/blog"
+            href="/articles"
             className="typo-body1 text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
             aria-label="All posts"
           >
-            All Posts &rarr;
+            All Articles &rarr;
           </Link>
         </div>
       )}

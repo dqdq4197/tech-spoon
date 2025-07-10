@@ -12,7 +12,7 @@ Add a `SearchProvider` component such as the one shown below and use it in place
 import { KBarSearchProvider } from 'pliny/search/KBar'
 import { useRouter } from 'next/navigation'
 import { CoreContent } from 'pliny/utils/contentlayer'
-import { Blog } from 'contentlayer/generated'
+import type { Article } from 'contentlayer/generated'
 
 export const SearchProvider = ({ children }) => {
   const router = useRouter()
@@ -39,7 +39,7 @@ export const SearchProvider = ({ children }) => {
           },
         ],
         onSearchDocumentsLoad(json) {
-          return json.map((post: CoreContent<Blog>) => ({
+          return json.map((post: CoreContent<Article>) => ({
             id: post.path,
             name: post.title,
             keywords: post?.summary || '',
@@ -59,21 +59,21 @@ export const SearchProvider = ({ children }) => {
 You can even choose to do a full text search over the entire generated blog content though this would come at the expense of a larger search index file by modifying the `createSearchIndex` function in `contentlayer.config.ts` to:
 
 ```tsx
-function createSearchIndex(allBlogs) {
+function createSearchIndex(allArticles) {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
   ) {
     writeFileSync(
       `public/${siteMetadata.search.kbarConfig.searchDocumentsPath}`,
-      JSON.stringify(sortPosts(allBlogs))
+      JSON.stringify(sortPosts(allArticles))
     )
     console.log('Local search index generated...')
   }
 }
 ```
 
-Note the change from `JSON.stringify(allCoreContent(sortPosts(allBlogs)))` to `JSON.stringify((sortPosts(allBlogs)))`.
+Note the change from `JSON.stringify(allCoreContent(sortPosts(allArticles)))` to `JSON.stringify((sortPosts(allArticles)))`.
 
 Next, in the modified `SearchProvider`, dump the raw content to the `keywords` field in the `onSearchDocumentsLoad` prop:
 
