@@ -133,7 +133,7 @@ export const Blogs = defineDocumentType(() => ({
 }))
 
 export const Authors = defineDocumentType(() => ({
-  name: 'Authors',
+  name: 'Author',
   filePathPattern: 'authors/**/*.mdx',
   contentType: 'mdx',
   fields: {
