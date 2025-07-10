@@ -32,7 +32,13 @@ function PostCard(props: Props) {
         )}
       >
         {thumbnail && (
-          <Image src={thumbnail} alt={''} width={500} height={500} className="w-full" />
+          <Image
+            src={`${process.env.BASE_PATH ?? ''}${thumbnail}`}
+            alt={''}
+            width={500}
+            height={500}
+            className="w-full"
+          />
         )}
         <div className="p-4">
           {/* 태그 */}
