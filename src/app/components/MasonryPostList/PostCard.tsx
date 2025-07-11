@@ -27,8 +27,8 @@ function PostCard(props: Props) {
       <Stack
         className={cn(
           'border-greyOpacity-5 mb-6 overflow-hidden rounded-3xl border bg-white/40 shadow-xl backdrop-blur-md transition-all',
-          'hover:border-greyOpacity-10 hover:shadow-brand-20/40 hover:before:from-greyOpacity-5 hover:scale-[1.02] hover:shadow-2xl hover:before:absolute hover:before:inset-0 hover:before:bg-gradient-to-br',
-          'dark:hover:shadow-brand-105/40 dark:border-white/10 dark:bg-white/10 dark:hover:border-white/20 dark:hover:before:from-white/12'
+          'hover:border-greyOpacity-10 hover:shadow-brand-20/40 hover:scale-[1.02]',
+          'dark:hover:shadow-brand-105/40 dark:border-white/10 dark:bg-white/10 dark:hover:border-white/20'
         )}
       >
         {thumbnail && (
