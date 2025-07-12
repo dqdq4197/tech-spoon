@@ -14,11 +14,11 @@ export const hrVariants = cva('border-0', {
       vertical: 'h-full w-px border-l',
     },
     color: {
-      default: 'border-white/12',
-      white80: 'border-white/80',
-      white30: 'border-white/30',
+      default: 'border-white-10',
+      white80: 'border-white-80',
+      white30: 'border-white-30',
       primary: 'border-brand-100',
-      shade: 'border-white/5',
+      shade: 'border-white-5',
     },
   },
   defaultVariants: {
