@@ -10,6 +10,7 @@ import siteMetadata from '@/data/siteMetadata'
 import type { Metadata } from 'next'
 import Navbar from './components/Navbar'
 import { ThemeProvider } from 'next-themes'
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
 
 const space_grotesk = IBM_Plex_Sans_KR({
   weight: ['400'],
@@ -75,8 +76,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
+        <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+        <VercelAnalytics />
         <ThemeProvider attribute="class">
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <Navbar />
           <SectionContainer>
             <main className="mb-auto">{children}</main>
