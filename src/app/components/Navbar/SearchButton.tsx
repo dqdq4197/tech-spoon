@@ -6,7 +6,7 @@ function SearchButton() {
     <SearchProvider
       searchConfig={{
         provider: 'kbar',
-        kbarConfig: { searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json` },
+        kbarConfig: { searchDocumentsPath: '/search.json' },
       }}
     >
       <KBarButton

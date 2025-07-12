@@ -31,15 +31,7 @@ function PostCard(props: Props) {
           'dark:hover:shadow-brand-105/40 dark:border-white/10 dark:bg-white/10 dark:hover:border-white/20'
         )}
       >
-        {thumbnail && (
-          <Image
-            src={`${process.env.BASE_PATH ?? ''}${thumbnail}`}
-            alt={''}
-            width={500}
-            height={500}
-            className="w-full"
-          />
-        )}
+        {thumbnail && <Image src={thumbnail} alt="" width={500} height={500} className="w-full" />}
         <div className="p-4">
           {/* 태그 */}
           {tags.length > 0 && (

@@ -57,7 +57,6 @@ const securityHeaders = [
 ]
 
 const output = process.env.EXPORT ? 'export' : undefined
-const basePath = process.env.BASE_PATH || undefined
 const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 
 /**
@@ -68,7 +67,6 @@ export default function config() {
 
   return plugins.reduce((acc, next) => next(acc), {
     output,
-    basePath,
     reactStrictMode: true,
     trailingSlash: false,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
