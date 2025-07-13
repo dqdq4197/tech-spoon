@@ -4,6 +4,7 @@ import NewsletterForm from 'pliny/ui/NewsletterForm'
 import MasonryPostList from './components/MasonryPostList'
 import type { Article } from 'contentlayer/generated'
 import type { CoreContent } from 'pliny/utils/contentlayer'
+import SectionContainer from '@/components/SectionContainer'
 
 const MAX_DISPLAY = 5
 
@@ -15,7 +16,7 @@ function Home(props: Props) {
   const { posts } = props
 
   return (
-    <>
+    <SectionContainer>
       <div className="space-y-2 pt-6 pb-8 md:space-y-5">
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 h-96 w-96 animate-pulse rounded-full bg-purple-500/20 blur-3xl"></div>
@@ -46,7 +47,7 @@ function Home(props: Props) {
           <NewsletterForm />
         </div>
       )}
-    </>
+    </SectionContainer>
   )
 }
 

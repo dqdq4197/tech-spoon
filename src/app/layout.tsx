@@ -4,7 +4,6 @@ import 'remark-github-blockquote-alert/alert.css'
 
 import { IBM_Plex_Sans_KR } from 'next/font/google'
 import { Analytics, type AnalyticsConfig } from 'pliny/analytics'
-import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import type { Metadata } from 'next'
@@ -82,10 +81,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SpeedInsights />
         <ThemeProvider attribute="class">
           <Navbar />
-          <SectionContainer>
-            <main className="mb-auto">{children}</main>
-            <Footer />
-          </SectionContainer>
+          <main className="mb-auto">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

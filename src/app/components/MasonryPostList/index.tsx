@@ -5,6 +5,7 @@ import React from 'react'
 import Masonry, { type MasonryProps } from 'react-masonry-css'
 import PostCard from './PostCard'
 import { motion, stagger } from 'motion/react'
+import { useIsServer } from '@/hooks'
 
 const container = {
   hidden: { opacity: 0 },
@@ -33,10 +34,11 @@ const breakpointCols = {
 
 function MasonryPostList(props: Props) {
   const { posts } = props
+  const isServer = useIsServer()
 
   return (
     <div className="mx-auto max-w-6xl lg:block">
-      <motion.div variants={container} initial="hidden" animate="show">
+      <motion.div variants={container} initial={isServer ? 'hidden' : 'show'} animate="show">
         <Masonry
           breakpointCols={breakpointCols}
           className="flex gap-x-4"

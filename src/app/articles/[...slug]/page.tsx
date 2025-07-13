@@ -76,7 +76,11 @@ export const generateStaticParams = async () => {
   return allArticles.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
 }
 
-export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+interface Props {
+  params: Promise<{ slug: string[] }>
+}
+
+async function Page(props: Props) {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
   // Filter out drafts in production
@@ -117,3 +121,5 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     </>
   )
 }
+
+export default Page
