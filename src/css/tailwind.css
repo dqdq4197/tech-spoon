@@ -4,7 +4,7 @@
 @plugin "@tailwindcss/forms";
 @plugin '@tailwindcss/typography';
 
-@source '../node_modules/pliny';
+@source '../../node_modules/pliny';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
