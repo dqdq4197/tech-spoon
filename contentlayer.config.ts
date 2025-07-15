@@ -109,7 +109,7 @@ export const Articles = defineDocumentType(() => ({
     draft: { type: 'boolean' },
     summary: { type: 'string' },
     images: { type: 'list', of: { type: 'string' } },
-    authors: { type: 'list', of: { type: 'string' } },
+    authors: { type: 'list', of: { type: 'string' }, required: true },
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
@@ -138,7 +138,7 @@ export const Authors = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     name: { type: 'string', required: true },
-    avatar: { type: 'string' },
+    avatar: { type: 'string', required: true },
     occupation: { type: 'string' },
     company: { type: 'string' },
     email: { type: 'string' },
