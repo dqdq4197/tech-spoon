@@ -3,7 +3,7 @@ import { cn } from '@/utils'
 import { type VariantProps, cva } from 'class-variance-authority'
 import type { ElementType } from 'react'
 
-export const hrVariants = cva('border-0', {
+const hrVariants = cva('border-0 border-greyOpacity-10 dark:border-white-10', {
   variants: {
     type: {
       solid: 'border-solid',
@@ -13,18 +13,10 @@ export const hrVariants = cva('border-0', {
       horizontal: 'h-px w-full border-t',
       vertical: 'h-full w-px border-l',
     },
-    color: {
-      default: 'border-white/12',
-      white80: 'border-white/80',
-      white30: 'border-white/30',
-      primary: 'border-brand-100',
-      shade: 'border-white/5',
-    },
   },
   defaultVariants: {
     type: 'solid',
     direction: 'horizontal',
-    color: 'default',
   },
 })
 
@@ -32,13 +24,11 @@ export type HrProps<E extends ElementType = 'hr'> = PolymorphicComponentProps<E,
   VariantProps<typeof hrVariants>
 
 function Hr<E extends ElementType = 'hr'>(props: HrProps<E>) {
-  const { as, type, direction, color, className, ...hrProps } = props
+  const { as, type, direction, className, ...hrProps } = props
 
   const Component = as ?? 'hr'
 
-  return (
-    <Component className={cn(hrVariants({ type, direction, color, className }))} {...hrProps} />
-  )
+  return <Component className={cn(hrVariants({ type, direction, className }))} {...hrProps} />
 }
 
 export default Hr

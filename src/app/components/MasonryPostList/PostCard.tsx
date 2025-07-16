@@ -3,8 +3,9 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Stack from '@/components/Stack'
-import { cn } from '@/utils'
+import { cn, resolveAuthors } from '@/utils'
 import Hr from '@/components/Hr'
+import Avatar from '@/components/Avatar'
 
 interface Props {
   post: Post
@@ -15,12 +16,12 @@ function PostCard(props: Props) {
   const { title, summary, tags, images, readingTime, path, authors } = post
   const thumbnail = images && images[0]
 
-  // 날짜 형식을 보기 좋게 변환합니다. (예: August 5, 2023)
-  const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  const formattedDate = new Date(post.date).toLocaleDateString('ko', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
+  const resolvedAuthors = resolveAuthors(authors)
 
   return (
     <Link href={`/${path}`}>
@@ -48,24 +49,26 @@ function PostCard(props: Props) {
           )}
 
           <h3 className="typo-h3 text-grey-100 dark:text-white-100 mb-2">{title}</h3>
-
+          <Stack
+            className="typo-body3 text-greyOpacity-80 dark:text-white-80 flex-row gap-0.5"
+            divider={<span>·</span>}
+          >
+            <span>{formattedDate}</span>
+            <span>{readingTime.text}</span>
+          </Stack>
           {summary && (
-            <p className="typo-body2 mb-4 flex-grow text-gray-950 dark:text-white/70">{summary}</p>
+            <p className="typo-body2 flex-grow text-gray-950 dark:text-white/70">{summary}</p>
           )}
-          <Hr />
-          <div>
-            {/* 작성자와 날짜 */}
-            <div className="flex items-center justify-between text-sm text-gray-400">
-              <span>{authors?.[0]}</span>
-              <span>{formattedDate}</span>
-            </div>
-          </div>
-          {/* 읽는 시간 */}
-          <div className="mt-auto text-right">
-            <span className="text-sm text-gray-600">
-              {readingTime ? readingTime.text : '읽는 시간 알 수 없음'}
-            </span>
-          </div>
+          <Hr className="my-3" />
+          <Stack className="flex-row items-center gap-2">
+            <Avatar avatars={['heesu_avatar', 'brand-icon']} size="small" />
+            <Stack
+              className="typo-h5 text-greyOpacity-80 dark:text-white-80 flex-row gap-0.5"
+              divider={<span>·</span>}
+            >
+              {resolvedAuthors.map((author) => author.name)}
+            </Stack>
+          </Stack>
         </div>
       </Stack>
     </Link>
