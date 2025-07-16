@@ -19,7 +19,9 @@ interface LayoutProps {
 export default function PostBanner({ content, next, prev, children }: LayoutProps) {
   const { slug, title, images } = content
   const displayImage =
-    images && images.length > 0 ? images[0] : 'https://picsum.photos/seed/picsum/800/400'
+    images && images.length > 0
+      ? images[0]
+      : 'https://res.cloudinary.com/dm5amo7c8/image/upload/v1752631860/brand-banner.png'
 
   return (
     <SectionContainer>

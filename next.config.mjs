@@ -77,7 +77,7 @@ export default function config() {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'picsum.photos',
+          hostname: 'res.cloudinary.com',
         },
       ],
       unoptimized,

@@ -1484,6 +1484,66 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cloudinary-util/types@npm:1.5.10":
+  version: 1.5.10
+  resolution: "@cloudinary-util/types@npm:1.5.10"
+  checksum: 0e033dfe1c337141fe6614fda780602bd3ec48c7a4dedccf617380ae6402430c92441b275712c0733d3e34cad47bd1cf41951703b8cdafb19d1babcbc1ec5027
+  languageName: node
+  linkType: hard
+
+"@cloudinary-util/url-loader@npm:5.10.4":
+  version: 5.10.4
+  resolution: "@cloudinary-util/url-loader@npm:5.10.4"
+  dependencies:
+    "@cloudinary-util/types": 1.5.10
+    "@cloudinary-util/util": 3.3.2
+    "@cloudinary/url-gen": 1.15.0
+    zod: ^3.22.4
+  checksum: 44e7b807159ecd4795475599516a87a1ab44f04313d99d8fbcaf84d84be6c8c0d982049ac02bc4d8cbc6abda67bdd462ec496edec5f6d679102e33720a17941b
+  languageName: node
+  linkType: hard
+
+"@cloudinary-util/util@npm:3.3.2":
+  version: 3.3.2
+  resolution: "@cloudinary-util/util@npm:3.3.2"
+  checksum: fb4fa4c14c56eb88750d834d1f497479fc34cdbdeb4fa2d601f9e03497e51b1bddad43b3616e32bae6690cccdaaa664211226368f62c3e1bf23c5e05d1b91b0f
+  languageName: node
+  linkType: hard
+
+"@cloudinary-util/util@npm:4.0.0":
+  version: 4.0.0
+  resolution: "@cloudinary-util/util@npm:4.0.0"
+  checksum: 0ac65c2ec59c5369a31102d4f2927e13f958afa0561084e97a70707797afb7523ce76e92de39aeb345c25bf44de42cc10772636985e2f7d18afa3ac3ea6f5887
+  languageName: node
+  linkType: hard
+
+"@cloudinary/transformation-builder-sdk@npm:^1.10.0, @cloudinary/transformation-builder-sdk@npm:^1.15.1":
+  version: 1.18.0
+  resolution: "@cloudinary/transformation-builder-sdk@npm:1.18.0"
+  dependencies:
+    "@cloudinary/url-gen": ^1.7.0
+  checksum: d2f07a11eb2dac7ef64d09354449fd8fc6661d196ac4499f0403ffecf97df28dd26a5cf9a98093d5d599cbac4c2a040384f17c468ff767cd533352219f1d801b
+  languageName: node
+  linkType: hard
+
+"@cloudinary/url-gen@npm:1.15.0":
+  version: 1.15.0
+  resolution: "@cloudinary/url-gen@npm:1.15.0"
+  dependencies:
+    "@cloudinary/transformation-builder-sdk": ^1.10.0
+  checksum: 774c4cf9978c31dd783576897f9ee309d30572c48e94e3366cc79ec69e1e6e7300cd373e360f18d5d16950cd521ee8905810ac9edc5b6748b2e5b8b8cfb40261
+  languageName: node
+  linkType: hard
+
+"@cloudinary/url-gen@npm:^1.7.0":
+  version: 1.21.0
+  resolution: "@cloudinary/url-gen@npm:1.21.0"
+  dependencies:
+    "@cloudinary/transformation-builder-sdk": ^1.15.1
+  checksum: ff2106b3e47d7a12c1a56ddc1771565847184dd8825ffe106f9b67caec7a3c3238a08cc8b8b1ffa4169b28238f8c096414105fdc81fb6e84d7abb870e7a4fc71
+  languageName: node
+  linkType: hard
+
 "@contentlayer2/cli@npm:0.5.4":
   version: 0.5.4
   resolution: "@contentlayer2/cli@npm:0.5.4"
@@ -9369,6 +9429,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-cloudinary@npm:^6.16.0":
+  version: 6.16.0
+  resolution: "next-cloudinary@npm:6.16.0"
+  dependencies:
+    "@cloudinary-util/types": 1.5.10
+    "@cloudinary-util/url-loader": 5.10.4
+    "@cloudinary-util/util": 4.0.0
+  peerDependencies:
+    next: ^12 || ^13 || ^14 || >=15.0.0-rc || ^15
+    react: ^17 || ^18 || >=19.0.0-beta || ^19
+  checksum: 81dc706aff83997dd48c25b764ac5d01b63852b62edf34a349dcfa023c883310934df51640e8312d03c8fcab12c01090229067da8fd1256a7844c4a6e35ebbd1
+  languageName: node
+  linkType: hard
+
 "next-contentlayer2@npm:0.5.5":
   version: 0.5.5
   resolution: "next-contentlayer2@npm:0.5.5"
@@ -11862,6 +11936,7 @@ __metadata:
     lint-staged: ^13.0.0
     motion: ^12.23.0
     next: 15.2.4
+    next-cloudinary: ^6.16.0
     next-contentlayer2: 0.5.5
     next-themes: ^0.4.6
     pliny: 0.4.1

@@ -1,15 +1,16 @@
 import type { Author } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
-import Image from '@/components/Image'
 import type { ReactNode } from 'react'
 import SectionContainer from '@/components/SectionContainer'
+import CldImage from '@/components/CldImage'
+import type { CoreContent } from 'pliny/utils/contentlayer'
 
 interface Props {
   children: ReactNode
-  content: Omit<Author, '_id' | '_raw' | 'body'>
+  content: CoreContent<Author>
 }
 
-export default function AuthorLayout({ children, content }: Props) {
+function AuthorLayout({ children, content }: Props) {
   const { name, avatar, occupation, company, email, linkedin, github } = content
 
   return (
@@ -23,7 +24,7 @@ export default function AuthorLayout({ children, content }: Props) {
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
           <div className="flex flex-col items-center space-x-2 pt-8">
             {avatar && (
-              <Image
+              <CldImage
                 src={avatar}
                 alt="avatar"
                 width={192}
@@ -48,3 +49,5 @@ export default function AuthorLayout({ children, content }: Props) {
     </SectionContainer>
   )
 }
+
+export default AuthorLayout
