@@ -48,7 +48,7 @@ function Avatar(props: Props) {
     <div className="flex items-center">
       {avatars.map((avatar, index) => (
         <div
-          key={avatar}
+          key={avatar + index}
           className={cn(
             'bg-white-100 rounded-full ring-2 ring-white dark:ring-gray-900',
             index > 0 && overlapVariants({ size })
