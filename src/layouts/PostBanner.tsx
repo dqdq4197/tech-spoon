@@ -1,4 +1,3 @@
-import Image from '@/components/Image'
 import Bleed from 'pliny/ui/Bleed'
 import type { Article } from 'contentlayer/generated'
 import Comments from '@/components/Comments'
@@ -8,6 +7,7 @@ import SectionContainer from '@/components/SectionContainer'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 import type { ReactNode } from 'react'
+import CldImage from '@/components/CldImage'
 
 interface LayoutProps {
   content: CoreContent<Article>
@@ -16,7 +16,7 @@ interface LayoutProps {
   prev?: { path: string; title: string }
 }
 
-export default function PostBanner({ content, next, prev, children }: LayoutProps) {
+function PostBanner({ content, next, prev, children }: LayoutProps) {
   const { slug, title, images } = content
   const displayImage =
     images && images.length > 0
@@ -31,8 +31,13 @@ export default function PostBanner({ content, next, prev, children }: LayoutProp
           <div className="space-y-1 pb-10 text-center dark:border-gray-700">
             <div className="w-full">
               <Bleed>
-                <div className="relative aspect-2/1 w-full">
-                  <Image src={displayImage} alt={title} fill className="rounded-4xl object-cover" />
+                <div className="relative aspect-2/1 w-full md:aspect-[2.5/1]">
+                  <CldImage
+                    src={displayImage}
+                    alt={title}
+                    fill
+                    className="object-cover md:rounded-2xl 2xl:rounded-4xl"
+                  />
                 </div>
               </Bleed>
             </div>
@@ -75,3 +80,5 @@ export default function PostBanner({ content, next, prev, children }: LayoutProp
     </SectionContainer>
   )
 }
+
+export default PostBanner

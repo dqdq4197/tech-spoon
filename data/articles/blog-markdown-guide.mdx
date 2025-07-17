@@ -1,0 +1,355 @@
+---
+title: 'tech spoon 블로그 마크다운 가이드'
+date: '2025-07-17'
+tags: ['guide']
+draft: false
+summary: '블로그 포스팅에 필요한 헤더, 목록, 이미지, 표 등 모든 마크다운 문법을 정리한 치트시트입니다. GitHub Flavored Markdown을 기반으로 한 예시와 함께 쉽게 알아보세요.'
+images: ['markdown-guide_thumbnail']
+layout: PostSimple
+authors: ['heesu']
+---
+
+## 개요
+
+<TOCInline
+  toc={props.toc}
+  exclude={['개요', 'h1 태그', 'h2 태그', 'h4 태그']}
+  asDisclosure
+  toHeading={4}
+/>
+
+## 소개
+
+이 블로그는 `unified`와 여러 remark, rehype 패키지를 통해 마크다운과 MDX를 파싱합니다.
+`next-mdx-remote` 덕분에 webpack 설정 없이도 `.mdx`와 `.md` 파일을 유연하게 처리할 수 있습니다.
+
+문법은 GitHub Flavored Markdown(GFM)을 기준으로 하며, `mdx-prism`이 코드 블록의 구문 강조를 담당합니다.
+아래에서 어떻게 보이는지 데모를 확인해 보세요.
+
+이 마크다운 치트시트는 [GitHub의 공식 가이드](https://guides.github.com/features/mastering-markdown/)를 바탕으로 작성되었습니다.
+
+## 마크다운이란?
+
+마크다운은 웹에서 텍스트에 서식을 적용하는 간단한 방법입니다.
+문서의 표시 방식을 직접 제어할 수 있죠. 단어를 굵게 만들거나 기울이고, 이미지를 추가하거나 목록을 만드는 등 다양한 작업을 할 수 있습니다.
+
+대부분의 마크다운은 일반 텍스트에 `#`나 `*` 같은 몇 가지 특수 문자를 더하는 것만으로 완성됩니다.
+
+## 헤더 (Headers)
+
+```
+# h1 태그
+## h2 태그
+#### h4 태그
+```
+
+# h1 태그
+
+## h2 태그
+
+#### h4 태그
+
+<br />
+## 강조 (Emphasis)
+
+```
+_이 텍스트는 기울임꼴이 됩니다_
+
+**이 텍스트는 굵게 표시됩니다**
+
+_이렇게 **조합**해서 사용할 수도 있습니다_
+```
+
+_이 텍스트는 기울임꼴이 됩니다_
+
+**이 텍스트는 굵게 표시됩니다**
+
+_이렇게 **조합**해서 사용할 수도 있습니다_
+
+## 줄바꿈 (Line Breaks)
+
+```
+This example
+Will span two lines
+```
+
+» This example
+Will span two lines
+
+.md 파일에서 위 예시는 줄바꿈 없이 한 줄로 표시됩니다. 줄바꿈을 추가하려면 다음 중 하나를 사용해야 합니다:
+
+1. 첫 번째 줄의 끝에 공백 두 개를 넣으세요.
+
+```
+This example
+Will span two lines
+```
+
+2. 첫 번째 줄의 끝에 백슬래시를 넣습니다.
+
+```
+This example\
+Will span two lines
+```
+
+3. 첫 번째 줄의 끝에 HTML 단일 줄바꿈 태그를 포함합니다.
+
+```
+This example<br/>
+Will span two lines
+```
+
+This example\
+Will span two lines
+
+## 목록 (Lists)
+
+### 순서 없는 목록
+
+```
+- 항목 1
+- 항목 2
+  - 항목 2a
+  - 항목 2b
+```
+
+- 항목 1
+- 항목 2
+  - 항목 2a
+  - 항목 2b
+
+### 순서 있는 목록
+
+```
+1. 항목 1
+2. 항목 2
+3. 항목 3
+   1. 항목 3a
+   2. 항목 3b
+```
+
+1. 항목 1
+2. 항목 2
+3. 항목 3
+   1. 항목 3a
+   2. 항목 3b
+
+## 이미지 (Images)
+
+```
+![tech spoon 로고](https://res.cloudinary.com/dm5amo7c8/image/upload/v1752631898/brand-icon.png)
+사용법: ![대체 텍스트](URL)
+```
+
+![tech spoon 로고](https://res.cloudinary.com/dm5amo7c8/image/upload/w_200/v1752631898/brand-icon.png)
+
+## 링크 (Links)
+
+```
+http://github.com - URL을 그대로 넣으면 자동으로 링크가 됩니다.
+[GitHub](http://github.com)
+```
+
+http://github.com - URL을 그대로 넣으면 자동으로 링크가 됩니다.
+[GitHub](http://github.com)
+
+## 인용문 (Blockquotes)
+
+```
+카니예 웨스트(Kanye West)는 이렇게 말했습니다:
+
+> 우리는 미래를 살고 있기에,
+> 현재는 우리의 과거다.
+```
+
+카니예 웨스트(Kanye West)는 이렇게 말했습니다:
+
+> 우리는 미래를 살고 있기에,
+> 현재는 우리의 과거다.
+
+## 인라인 코드 (Inline code)
+
+```
+이 부분에는 `<addr>` 요소를 사용하는 것이 좋겠습니다.
+```
+
+이 부분에는 `<addr>` 요소를 사용하는 것이 좋겠습니다.
+
+## 구문 강조 (Syntax highlighting)
+
+다음은 [GitHub Flavored Markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/)을 활용한 구문 강조 예시입니다.
+
+#### 코드 제목과 함께 표시
+
+````
+```js:fancyAlert.js
+function fancyAlert(arg) {
+  if (arg) {
+    $.facebox({ div: '#foo' })
+  }
+}
+```
+````
+
+```js:fancyAlert.js
+function fancyAlert(arg) {
+  if (arg) {
+    $.facebox({ div: '#foo' })
+  }
+}
+```
+
+#### 특정 줄 하이라이트 및 줄 번호 표시
+
+````
+```js {1,3-4} showLineNumbers
+function fancyAlert(arg) {
+  if (arg) {
+    $.facebox({ div: '#foo' })
+  }
+}
+```
+````
+
+```js {1,3-4} showLineNumbers
+function fancyAlert(arg) {
+  if (arg) {
+    $.facebox({ div: '#foo' })
+  }
+}
+```
+
+#### 차이점 강조 (Diff)
+
+````
+```diff-js
+function fancyAlert(arg) {
+  if (arg) {
+-   $.facebox({ div: '#foo' })
++   $.facebox({ div: '#bar' })
+  }
+}
+```
+````
+
+```diff-js
+function fancyAlert(arg) {
+  if (arg) {
+-   $.facebox({ div: '#foo' })
++   $.facebox({ div: '#bar' })
+  }
+}
+```
+
+## 각주 (Footnotes)
+
+```
+여기에 간단한 각주[^1]를 추가할 수 있습니다. 각주 뒤에는 일반 텍스트를 계속해서 작성하면 됩니다.
+
+[^1]: 여기에 각주에 대한 설명을 작성합니다.
+```
+
+여기에 간단한 각주[^1]를 추가할 수 있습니다. 각주 뒤에는 일반 텍스트를 계속해서 작성하면 됩니다.
+
+[^1]: 여기에 각주에 대한 설명을 작성합니다.
+
+## 작업 목록 (Task Lists)
+
+```
+- [x] 완료된 항목
+- [ ] 미완료 항목
+- [ ] 순서 있는 목록이나 순서 없는 목록 구문이 필요합니다.
+```
+
+- [x] 완료된 항목
+- [ ] 미완료 항목
+- [ ] 순서 있는 목록이나 순서 없는 목록 구문이 필요합니다.
+
+## 표 (Tables)
+
+하이픈(`-`)으로 헤더와 셀을 구분하고, 파이프(`|`)로 각 열을 구분하여 표를 만들 수 있습니다.
+
+```
+| 첫 번째 헤더      | 두 번째 헤더      |
+| ----------------- | ----------------- |
+| 첫 번째 셀 내용   | 두 번째 셀 내용   |
+| 첫 번째 열의 다른 내용 | 두 번째 열의 다른 내용 |
+```
+
+| 첫 번째 헤더           | 두 번째 헤더           |
+| ---------------------- | ---------------------- |
+| 첫 번째 셀 내용        | 두 번째 셀 내용        |
+| 첫 번째 열의 다른 내용 | 두 번째 열의 다른 내용 |
+
+## 취소선 (Strikethrough)
+
+물결표 두 개(`~~`)로 단어를 감싸면 ~~이렇게 취소선~~이 적용됩니다.
+
+## 수학 구문 (Math Syntax)
+
+수학 구문도 지원하여 복잡한 방정식과 수식을 문서에 포함할 수 있습니다.
+이는 주로 [LaTeX](https://ko.wikipedia.org/wiki/LaTeX) 문법을 기반으로 하며, [KaTeX](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex)와 같은 렌더링 라이브러리를 통해 표시됩니다.
+
+```
+양력($$L$$)은 다음과 같은 식으로 양력 계수($$C_L$$)에 의해 결정됩니다.
+```
+
+양력($$L$$)은 양력 계수($$C_L$$)를 이용한 아래 식을 통해 계산할 수 있습니다.
+
+````
+
+// 첫 번째 방식
+
+$$
+L = \frac{1}{2} \rho v^2 S C_L
+$$
+
+// 두 번째 방식
+
+```math
+L = \frac{1}{2} \rho v^2 S C_L
+```
+
+````
+
+$$
+L = \frac{1}{2} \rho v^2 S C_L
+$$
+
+## 알림 (Alerts)
+
+알림을 추가하려면, 특수 블록 인용문 라인에 알림 유형을 지정한 다음, 표준 블록 인용문([Blockquotes](#))으로 알림 정보를 작성합니다.
+
+다음 5가지 유형의 알림을 사용할 수 있습니다:
+
+```
+> [!NOTE]
+> 사용자가 내용을 빠르게 훑어볼 때도 알아야 할 유용한 정보입니다.
+
+> [!TIP]
+> 더 좋거나 쉽게 작업을 수행하는 데 도움이 되는 조언입니다.
+
+> [!IMPORTANT]
+> 사용자가 목표를 달성하기 위해 알아야 할 핵심 정보입니다.
+
+> [!WARNING]
+> 문제를 방지하기 위해 즉각적인 사용자 주의가 필요한 긴급 정보입니다.
+
+> [!CAUTION]
+> 특정 작업의 위험 또는 부정적인 결과에 대해 조언합니다.
+```
+
+> [!NOTE]
+> 사용자가 내용을 빠르게 훑어볼 때도 알아야 할 유용한 정보입니다.
+
+> [!TIP]
+> 더 좋거나 쉽게 작업을 수행하는 데 도움이 되는 조언입니다.
+
+> [!IMPORTANT]
+> 사용자가 목표를 달성하기 위해 알아야 할 핵심 정보입니다.
+
+> [!WARNING]
+> 문제를 방지하기 위해 즉각적인 사용자 주의가 필요한 긴급 정보입니다.
+
+> [!CAUTION]
+> 특정 작업의 위험 또는 부정적인 결과에 대해 조언합니다.
