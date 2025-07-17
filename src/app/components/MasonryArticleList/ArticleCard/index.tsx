@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import Stack from '@/components/Stack'
 import { cn } from '@/utils'
@@ -7,6 +6,7 @@ import CardHeader from './CardHeader'
 import CardContent from './CardContent'
 import type { Article } from 'contentlayer/generated'
 import type { CoreContent } from 'pliny/utils/contentlayer'
+import CldImage from '@/components/CldImage'
 
 interface Props {
   article: CoreContent<Article>
@@ -27,7 +27,7 @@ function ArticleCard(props: Props) {
         )}
       >
         {thumbnail && (
-          <Image src={thumbnail} alt={title} width={500} height={500} className="w-full" />
+          <CldImage src={thumbnail} alt={title} width={500} height={500} className="w-full" />
         )}
         <CardHeader title={title} date={date} tags={tags} readingTime={readingTime} />
         <CardContent summary={summary} authors={authors} />
