@@ -24,7 +24,7 @@ function CardContent(props: Props) {
   })()
 
   return (
-    <Stack className="px-4 pb-4" divider={<Hr className="my-2" />}>
+    <Stack className="px-4 pb-4" divider={<Hr className="my-3" />}>
       {summary && <p className="typo-body2 text-grey-100 dark:text-white/70">{summary}</p>}
       <Stack className="flex-row items-center gap-2">
         <Avatar avatars={avatars} size="small" />

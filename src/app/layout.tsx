@@ -1,5 +1,4 @@
 import '@/css/tailwind.css'
-import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
 
 import { IBM_Plex_Sans_KR } from 'next/font/google'
@@ -11,6 +10,7 @@ import Navbar from './components/Navbar'
 import { ThemeProvider } from 'next-themes'
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { ReactNode } from 'react'
 
 const space_grotesk = IBM_Plex_Sans_KR({
   weight: ['400'],
@@ -59,7 +59,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface Props {
+  children: ReactNode
+}
+
+function RootLayout(props: Props) {
+  const { children } = props
+
   return (
     <html
       lang={siteMetadata.language}
@@ -75,7 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-      <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
+      <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
         <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
         <VercelAnalytics />
         <SpeedInsights />
@@ -88,3 +94,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
+
+export default RootLayout

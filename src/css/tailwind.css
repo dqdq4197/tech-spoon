@@ -153,6 +153,14 @@
   }
 }
 
+/* 
+  고정된 네비게이션 바(header)에 의해 앵커 대상이 가려지지 않도록 
+  모든 ID 요소에 네비게이션 바 높이(3.75rem)만큼 scroll-margin-top 적용.
+*/
+[id] {
+  scroll-margin-top: 3.75rem;
+}
+
 .task-list-item::before {
   @apply hidden;
 }
