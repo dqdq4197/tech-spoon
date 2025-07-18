@@ -72,6 +72,9 @@
   --z-60: 60;
   --z-70: 70;
   --z-80: 80;
+
+  /* kbar bg hover style에 사용됨. */
+  --color-primary-600: var(--color-brand-105);
 }
 
 /*
