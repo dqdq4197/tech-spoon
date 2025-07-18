@@ -1,0 +1,298 @@
+---
+title: 'React Navigation Material Top Tabs 스크롤 커스터마이징 가이드'
+date: '2024-06-01'
+lastmod: '2025-07-18'
+tags: ['react-native']
+draft: false
+summary: 'React Navigation의 Material Top Tabs 컴포넌트를 커스터마이징하여, 탭이 많아졌을 때도 자연스럽게 스크롤되도록 설정하는 방법을 설명합니다.'
+images: ['react-nav-material-top-tabs-scrollable_thumbnail']
+authors: ['heesu']
+layout: PostBanner
+---
+
+[**Bitfolio**](https://github.com/dqdq4197/BitFolio-app)앱을 개발할 때 구현했던 UI의 일부입니다.
+
+해당 포스트에서는 React Navigation의 `material-top-tabs` 컴포넌트를 커스터마이징하여, 탭이 많아졌을 때도 인터렉션과 함께 스크롤되도록 설정하는 방법을 설명합니다.
+
+이후 설명의 이해를 돕기 위해, 실제 product의 핵심 일부만을 발췌해 예제로 재구성하였습니다. [해당 예제](https://snack.expo.dev/@heesuio/custom-material-scollable-top-tab)를 기준으로 설명을 진행하니 참고 바랍니다.
+
+또한, layout 측정 로직과 animation 구현을 제외한 기본적인 Navigation 동작은 공식 문서에 있는 예제를 기반으로 구현되었으며, 이 글에서는 주로 layout 측정 및 사용자 상호작용(interaction)에 초점을 맞추어 설명합니다.
+
+### 전제 조건 및 의존성
+
+```text
+- react-native >= 0.63.0
+- expo >= 41 (if you use Expo)
+- typescript >= 4.1.0 (if you use TypeScript)
+- @react-navigation/native >= 6.x
+- @react-navigation/material-top-tabs > 6.x
+- react-native-pager-view >= 5.x
+- react-native-tab-view > 3.x
+```
+
+### 용어 정리
+
+본격적인 설명에 앞서, 글에서 사용될 주요 용어들을 간단히 정의하고 넘어가겠습니다.
+
+<div className="gap-4 md:flex">
+
+![tech spoon
+로고](https://res.cloudinary.com/dm5amo7c8/image/upload/w_400/v1752817399/definitions_g9dycm.png)
+
+1. Tab Navigation 역할을 해줄 **탭 바(Tab Bar)** 입니다. 각각의 탭 요소들은 **탭(Tab)** 이라고 부르겠습니다.
+2. 현재 위치를 나타내는 **Indicator** 입니다. Animated를 이용하여 부드러운 움직임을 구현할 것입니다.
+3. **탭 뷰(Tab View)** 입니다. scrollable 콘텐츠가 될 수도 있고, 사진 또는 다양한 콘텐츠가 자유롭게 구성될 수 있습니다.
+4. 현재 보여지는 탭 뷰에 해당하는 탭을 **활성화 탭** 이라고 부르겠습니다.
+
+</div>
+
+### 구현할 인터랙션 소개
+
+각 탭의 너비가 텍스트 길이에 따라 유동적으로 달라지는 스크롤 가능한 탭 바를 구현할 경우, Indicator 역시 활성화된 탭에 맞춰 너비가 함께 변해야 합니다.
+
+material-top-tab을 감싸고 있는 react-native-tab-view는 현재 위치를 나타내는 Animated 노드를 position prop으로 제공합니다.
+
+이를 활용하여 아래와 같은 인터랙션을 구현할 예정입니다.
+
+1. 탭이 활성화되는 위치에 가까워질수록 해당 탭의 opacity를 보간하여 점진적으로 강조합니다.
+2. 현재 위치를 나타내는 Indicator의 가로 위치를 보간합니다.
+3. Indicator의 위치 보간과 동시에, 이전/다음 활성화 탭의 너비를 기준으로 Indicator의 scale을 보간하여 크기를 조절합니다.
+4. 활성화된 탭이 화면의 중앙에 위치하도록, 탭 바의 스크롤 위치를 동적으로 조정합니다.
+
+### 구현
+
+UI와 내비게이션은 핵심 흐름에 집중할 수 있도록 최대한 단순하게 구성했습니다. [예제](https://snack.expo.dev/@heesuio/custom-material-scollable-top-tab)를 함께 참고해주세요.
+
+```tsx:App.tsx
+<NavigationContainer>
+	<Tab.Navigator tabBar={props => <TabBar {...props} />}>
+		<Tab.Screen name='overview' component={TabView} />
+		<Tab.Screen name='profile' component={TabView} />
+        	<Tab.Screen name='news' component={TabView} />
+        	<Tab.Screen name='transactions' component={TabView} />
+        	<Tab.Screen name='notice' component={TabView} />
+        	<Tab.Screen name='discussion' component={TabView} />
+     	</Tab.Navigator>
+</NavigationContainer>
+```
+
+`Tab.Navigator` 컴포넌트의 tabBar props를 통해 커스텀한 TabBar를 컴포넌트를 전달할 수 있습니다.
+
+---
+
+인터랙션을 구현하려면 각 탭의 left 및 width 값과 탭 바 전체의 너비 값이 필요합니다.
+
+```tsx
+const tabRefs = useRef<RefObject<TouchableOpacity>[]>(
+  Array.from({ length: state.routes.length }, () => createRef())
+).current
+```
+
+우선 각 탭의 위치와 너비를 측정하기 위해, 탭 엘리먼트를 참조할 수 있는 `ref`를 연결해 줄 것입니다.
+이를 위해 `state.routes`의 길이 만큼 `React.createRef()`로 ref들을 생성하여 `tabRefs` 상수에 할당했습니다.
+
+각 탭의 left, width 값을 측정할 때는, 각 탭을 감싸고 있는 ScrollView를 기준으로 삼습니다.
+따라서 ScrollView 자체도 참조할 수 있어야 하므로, 다음과 같이 ref를 생성해줍니다.
+
+```tsx
+const scrollViewRef = useRef<ScrollView>(null)
+```
+
+이제 탭 바의 전체 너비를 측정하기 위해, onLayout 이벤트에 전달할 핸들러 함수를 정의하겠습니다.
+
+```tsx
+const [tabBarSize, setTabBarSize] = useState(0)
+
+const handleTabWrapperLayout = (event: LayoutChangeEvent) => {
+  const { width } = event.nativeEvent.layout
+  setTabBarSize(width)
+}
+```
+
+ScrollView에는 ref를 전달하고, 각 탭 컴포넌트에는 tabRefs 배열의 요소를 ref로 넘겨 연결해줍니다.
+또한, 탭 바(ScrollView)의 전체 너비를 구하기 위해 onLayout 이벤트 핸들러도 전달합니다.
+
+```tsx:TabBar.tsx {4,8,12,15-18,23}
+<View style={styles.container}>
+  <ScrollView
+    horizontal
+    ref={scrollViewRef}
+    showsHorizontalScrollIndicator={false}
+  >
+    <View
+      onLayout={handleTabWrapperLayout}
+      style={styles.tabWrapper}
+    >
+      {state.routes.map(({ key, name }, index) => {
+  	    const ref = tabRefs[index]
+
+ 	      // ...공식 문서의 예제와 일치하는 코드는 제외하였습니다.
+        const opacity = position.interpolate({
+            inputRange,
+	        outputRange: inputRange.map(i => (i === index ? 1 : 0.6)),
+        });
+
+        return (
+          <Tab
+            key={key}
+            ref={ref}
+            label={label as string}
+            opacity={opacity}
+            isFocused={isFocused}
+            onPress={onPress}
+          />
+        );
+      })}
+    </View>
+    // ...생략
+  </ScrollView>
+</View>
+```
+
+position은 현재 탭 위치를 나타내는 Animated 값으로, 0부터 탭의 개수만큼의 범위를 가집니다.
+이를 활용하여 interpolate 함수를 통해 각 탭의 opacity를 계산합니다.
+
+활성화된 탭(`i === index`)일 경우에는 opacity를 1로 설정해 선명하게 표시하고,
+그 외의 탭들은 0.6으로 설정해 상대적으로 흐릿하게 표현합니다.
+
+```tsx:Tab.tsx {5,15}
+const Tab = forwardRef<TouchableOpacity, ITab>(
+  ({ label, isFocused, opacity, onPress }, ref) => {
+  return (
+    <TouchableOpacity
+      ref={ref}
+      accessible
+      accessibilityRole="button"
+      accessibilityState={isFocused ? { selected: true } : {}}
+      accessibilityLabel={label}
+      activeOpacity={0.6}
+      style={styles.container}
+      onPress={onPress}
+    >
+      <Animated.Text
+      	style={[styles.textStyle, { opacity }]} // opacity: animated interpolation 할당
+      >
+        {label}
+      </Animated.Text>
+    </TouchableOpacity>
+  );
+});
+
+export default Tab;
+```
+
+Tab 컴포넌트에서 forwardRef로 전달받아 연결해 주었습니다.
+
+```tsx
+const [measures, setMeasures] = useState<ITabMeasure[] | null>(null)
+
+useEffect(() => {
+  if (scrollViewRef.current) {
+    const temp: ITabMeasure[] = []
+
+    tabRefs.forEach((ref, _, array) => {
+      ref.current?.measureLayout(
+        scrollViewRef.current,
+        (left, top, width, height) => {
+          temp.push({ left, top, width, height })
+
+          if (temp.length === array.length) {
+            setMeasures(temp)
+          }
+        },
+        () => console.log('failed')
+      )
+    })
+  }
+}, [tabRefs])
+```
+
+measureLayout 메서드를 사용하면 각 탭 요소의 위치와 크기를, 이를 감싸고 있는 ScrollView 기준으로 측정할 수 있습니다.
+위 코드에서는 각 탭의 ref를 통해 left, top, width, height 값을 구하고, 이를 배열에 순서대로 담아 measures 상태로 저장합니다.
+
+이제 이 측정값들을 기반으로 Indicator 애니메이션을 구현해 보겠습니다.
+
+```tsx:Indicator-UI-및-인터랙션
+const standardSize = useMemo(() => {
+  if (!tabBarSize) return 0
+  return tabBarSize / state.routes.length
+}, [tabBarSize])
+
+const inputRange = useMemo(() => {
+  return state.routes.map((_, i) => i)
+}, [state])
+
+const indicatorScale = useMemo(() => {
+  if (!measures || !standardSize) return 0
+
+  return position.interpolate({
+    inputRange,
+    outputRange: measures.map((measure) => measure.width / standardSize),
+  })
+}, [inputRange, measures, standardSize])
+
+const translateX = useMemo(() => {
+  if (!measures || !standardSize) return 0
+
+  return position.interpolate({
+    inputRange,
+    outputRange: measures.map((measure) => measure.left - (standardSize - measure.width) / 2),
+  })
+}, [inputRange, measures, standardSize])
+
+<Animated.View
+  style={[
+    styles.indicator,
+    {
+      width: standardSize,
+      transform: [
+        {
+          translateX,
+        },
+        {
+          scaleX: indicatorScale,
+        },
+      ],
+    },
+  ]}
+/>
+```
+
+자주 사용되는 `inputRange`와 `standardSize`는 재사용을 위해 useMemo로 감싼 상수로 분리해두었습니다.
+
+Indicator의 scale을 각 탭의 너비에 맞춰 보간해야 하므로, 이를 위해 탭의 측정값이나 탭 바의 전체 너비가 아직 준비되지 않았을 경우를 대비한 예외 처리를 추가해주었습니다.
+
+1. 각 탭의 기본 너비는 standardSize(탭 바 전체 너비 / 탭 개수)로 설정되어 있으며,
+2. 각 탭의 실제 너비와 standardSize의 비율을 계산하여 scaleX 값에 반영합니다.
+
+또한 현재 활성화된 탭의 위치를 기준으로 Indicator의 translateX 값을 보간하여 위치를 조정합니다.
+
+이제 마지막 단계로, 활성화된 탭이 화면 중앙에 위치할 수 있도록 ScrollView의 스크롤 위치를 조정해 주겠습니다.
+
+```tsx
+useEffect(() => {
+  if (scrollViewRef.current && measures) {
+    const { index } = state
+    const screenCenterXPos = DWidth / 2 - measures[index].width / 2
+
+    scrollViewRef.current.scrollTo({
+      x: measures[index].left - screenCenterXPos,
+      y: 0,
+      animated: true,
+    })
+  }
+}, [state, measures])
+```
+
+위 코드처럼, 현재 활성화된 탭이 화면 정중앙에 위치하도록 ScrollView를 스크롤 시켜주었습니다.
+
+useEffect의 의존성 배열에 state가 포함되어 있기 때문에, 활성화된 탭이 변경될 때마다 해당 effect가 재실행되어 스크롤 위치가 갱신됩니다.
+
+### 마무리
+
+탭 바의 동적 길이, 인디케이터 인터랙션, 그리고 중앙 정렬 스크롤까지 모두 구현하면서 사용자 경험을 한층 더 개선할 수 있었습니다.
+
+작은 디테일이지만, 이런 인터랙션이 모여 앱의 완성도를 높이는 중요한 요소가 됩니다.
+
+작지만 의미 있었던 경험을 바탕으로 가이드를 작성해 보았습니다.\
+혹시 부족하거나 보완이 필요한 부분이 있다면, 댓글로 지적해주세요!

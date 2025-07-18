@@ -27,7 +27,7 @@ function ArticleCard(props: Props) {
         )}
       >
         {thumbnail && (
-          <CldImage src={thumbnail} alt={title} width={500} height={500} className="w-full" />
+          <CldImage src={thumbnail} alt={title} width={1000} height={500} className="w-full" />
         )}
         <CardHeader title={title} date={date} tags={tags} readingTime={readingTime} />
         <CardContent summary={summary} authors={authors} />
