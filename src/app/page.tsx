@@ -10,7 +10,6 @@ import NewsletterForm from 'pliny/ui/NewsletterForm'
 async function Page() {
   const sortedArticles = sortPosts(allArticles)
   const articles = allCoreContent(sortedArticles)
-  console.log('articles:', articles)
 
   return (
     <SectionContainer>
