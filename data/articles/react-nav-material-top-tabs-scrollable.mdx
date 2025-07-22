@@ -1,7 +1,7 @@
 ---
 title: 'React Navigation Material Top Tabs 스크롤 커스터마이징 가이드'
-date: '2024-06-01'
-lastmod: '2025-07-18'
+date: '2024-08-01'
+lastmod: '2025-07-19'
 tags: ['react-native']
 draft: false
 summary: 'React Navigation의 Material Top Tabs 컴포넌트를 커스터마이징하여, 탭이 많아졌을 때도 자연스럽게 스크롤되도록 설정하는 방법을 설명합니다.'
@@ -14,7 +14,7 @@ layout: PostBanner
 
 해당 포스트에서는 React Navigation의 `material-top-tabs` 컴포넌트를 커스터마이징하여, 탭이 많아졌을 때도 인터렉션과 함께 스크롤되도록 설정하는 방법을 설명합니다.
 
-이후 설명의 이해를 돕기 위해, 실제 product의 핵심 일부만을 발췌해 예제로 재구성하였습니다. [해당 예제](https://snack.expo.dev/@heesuio/custom-material-scollable-top-tab)를 기준으로 설명을 진행하니 참고 바랍니다.
+설명의 이해를 돕기 위해, 실제 product의 핵심 일부만을 발췌해 예제로 재구성하였습니다. [해당 예제](https://snack.expo.dev/@heesuio/custom-material-scollable-top-tab)를 기준으로 설명을 진행하니 참고 바랍니다.
 
 또한, layout 측정 로직과 animation 구현을 제외한 기본적인 Navigation 동작은 공식 문서에 있는 예제를 기반으로 구현되었으며, 이 글에서는 주로 layout 측정 및 사용자 상호작용(interaction)에 초점을 맞추어 설명합니다.
 
