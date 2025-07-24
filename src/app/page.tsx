@@ -5,7 +5,6 @@ import PulsingBlobs from './components/PulsingBlobs'
 import siteMetadata from '@/data/siteMetadata'
 import MasonryArticleList from './components/MasonryArticleList'
 import Link from '@/components/Link'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 async function Page() {
   const sortedArticles = sortPosts(allArticles)
@@ -32,11 +31,6 @@ async function Page() {
           All Articles &rarr;
         </Link>
       </div>
-      {siteMetadata.newsletter?.provider && (
-        <div className="flex items-center justify-center pt-4">
-          <NewsletterForm />
-        </div>
-      )}
     </SectionContainer>
   )
 }
