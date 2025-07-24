@@ -1,5 +1,4 @@
-import type { PlinyConfig } from 'pliny/config'
-
+/** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'Tech Spoon',
   author: 'heesu',
@@ -16,6 +15,6 @@ const siteMetadata = {
       googleAnalyticsId: 'G-CVRHJZP241',
     },
   },
-} satisfies Partial<PlinyConfig>
+}
 
-export default siteMetadata
+module.exports = siteMetadata
