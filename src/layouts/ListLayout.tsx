@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
 import type { CoreContent } from 'pliny/utils/contentlayer'
@@ -9,16 +9,13 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import SectionContainer from '@/components/SectionContainer'
+import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
+import { AnimatePresence, motion } from 'motion/react'
+import { createFuzzyMatcher } from '@/utils'
 
 interface PaginationProps {
   totalPages: number
   currentPage: number
-}
-interface ListLayoutProps {
-  posts: CoreContent<Article>[]
-  title: string
-  initialDisplayPosts?: CoreContent<Article>[]
-  pagination?: PaginationProps
 }
 
 function Pagination({ totalPages, currentPage }: PaginationProps) {
@@ -34,29 +31,40 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
     <div className="space-y-2 pt-6 pb-8 md:space-y-5">
       <nav className="flex justify-between">
         {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
+          <button
+            className="flex cursor-auto items-center gap-0.5 disabled:opacity-50"
+            disabled={!prevPage}
+          >
+            <MdArrowBackIosNew className="w-3" /> 이전
           </button>
         )}
         {prevPage && (
           <Link
+            className="flex items-center gap-0.5"
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
           >
-            Previous
+            <MdArrowBackIosNew className="w-3" /> 이전
           </Link>
         )}
         <span>
-          {currentPage} of {totalPages}
+          {currentPage} / {totalPages}
         </span>
         {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
+          <button
+            className="flex cursor-auto items-center gap-0.5 disabled:opacity-50"
+            disabled={!nextPage}
+          >
+            다음 <MdArrowForwardIos className="w-3" />
           </button>
         )}
         {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
+          <Link
+            className="flex items-center gap-0.5"
+            href={`/${basePath}/page/${currentPage + 1}`}
+            rel="next"
+          >
+            다음 <MdArrowForwardIos className="w-3" />
           </Link>
         )}
       </nav>
@@ -64,17 +72,34 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   )
 }
 
-export default function ListLayout({
-  posts,
-  title,
-  initialDisplayPosts = [],
-  pagination,
-}: ListLayoutProps) {
+const liVariants = {
+  initialState: { opacity: 1, scale: 1 },
+  enter: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.9 },
+}
+
+interface Props {
+  posts: CoreContent<Article>[]
+  initialDisplayPosts?: CoreContent<Article>[]
+  pagination?: PaginationProps
+}
+
+function ListLayout(props: Props) {
+  const { posts, initialDisplayPosts = [], pagination } = props
   const [searchValue, setSearchValue] = useState('')
   const filteredBlogPosts = posts.filter((post) => {
+    const searchRegExp = createFuzzyMatcher(searchValue)
     const searchContent = post.title + post.summary + post.tags?.join(' ')
-    return searchContent.toLowerCase().includes(searchValue.toLowerCase())
+
+    return searchRegExp.test(searchContent)
   })
+
+  const [isInitial, setIsInitial] = useState(true)
+
+  useEffect(() => {
+    setIsInitial(false)
+  }, [])
 
   // If initialDisplayPosts exist, display it if no searchValue is specified
   const displayPosts =
@@ -84,17 +109,17 @@ export default function ListLayout({
     <SectionContainer>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            {title}
+          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14 dark:text-gray-100">
+            모든 아티클
           </h1>
           <div className="relative max-w-lg">
             <label>
-              <span className="sr-only">Search articles</span>
+              <span className="sr-only">아티클 검색</span>
               <input
                 aria-label="Search articles"
                 type="text"
                 onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search articles"
+                placeholder="아티클 검색"
                 className="focus:border-brand-100 focus:ring-brand-100 block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
               />
             </label>
@@ -115,37 +140,49 @@ export default function ListLayout({
           </div>
         </div>
         <ul>
-          {!filteredBlogPosts.length && 'No posts found.'}
-          {displayPosts.map((post) => {
-            const { path, date, title, summary, tags } = post
-            return (
-              <li key={path} className="py-4">
-                <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                  <dl>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                    </dd>
-                  </dl>
-                  <div className="space-y-3 xl:col-span-3">
-                    <div>
-                      <h3 className="text-2xl leading-8 font-bold tracking-tight">
-                        <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
-                          {title}
-                        </Link>
-                      </h3>
-                      <div className="flex flex-wrap">
-                        {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+          {!filteredBlogPosts.length && (
+            <p className="typo-body1 pt-4">작성된 아티클이 없어요 😂</p>
+          )}
+          <AnimatePresence mode="popLayout">
+            {displayPosts.map((post) => {
+              const { path, date, title, summary, tags } = post
+              return (
+                <motion.li
+                  key={path}
+                  layout
+                  className="bg-gray-950 py-4"
+                  variants={liVariants}
+                  initial={isInitial ? 'initialState' : 'enter'}
+                  animate="animate"
+                  exit="exit"
+                >
+                  <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+                    <dl>
+                      <dt className="sr-only">Published on</dt>
+                      <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
+                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                      </dd>
+                    </dl>
+                    <div className="space-y-3 xl:col-span-3">
+                      <div>
+                        <h3 className="text-2xl leading-8 font-bold tracking-tight">
+                          <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
+                            {title}
+                          </Link>
+                        </h3>
+                        <div className="flex flex-wrap">
+                          {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                        </div>
+                      </div>
+                      <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                        {summary}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                      {summary}
-                    </div>
-                  </div>
-                </article>
-              </li>
-            )
-          })}
+                  </article>
+                </motion.li>
+              )
+            })}
+          </AnimatePresence>
         </ul>
       </div>
       {pagination && pagination.totalPages > 1 && !searchValue && (
@@ -154,3 +191,5 @@ export default function ListLayout({
     </SectionContainer>
   )
 }
+
+export default ListLayout
