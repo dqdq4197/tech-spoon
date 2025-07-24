@@ -1,4 +1,4 @@
-import ListLayout from '@/layouts/ListLayout'
+import ListLayout from '@/app/articles/components/ListLayout'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allArticles } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'

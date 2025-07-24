@@ -9,6 +9,7 @@ import SearchButton from '@/app/components/Navbar/SearchButton'
 import ThemeSwitch from '@/app/components/Navbar/ThemeSwitch'
 import MobileNav from '@/app/components/Navbar/MobileNav'
 import { IcTechSpoon } from 'public/static/icons/Logo'
+import TextButton from '@/components/TextButton'
 
 const Header = () => {
   const isScrolled = useScrolled()
@@ -29,13 +30,9 @@ const Header = () => {
             {headerNavLinks
               .filter((link) => link.href !== '/')
               .map((link) => (
-                <Link
-                  key={link.title}
-                  href={link.href}
-                  className="hover:text-brand-100 dark:hover:text-brand-95 typo-body1 dark:text-white-100 text-grey-100 m-1"
-                >
-                  {link.title}
-                </Link>
+                <TextButton asChild key={link.title} className="typo-body1 m-1" variant="neutral">
+                  <Link href={link.href}>{link.title}</Link>
+                </TextButton>
               ))}
           </div>
           <SearchButton />

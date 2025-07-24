@@ -1,7 +1,7 @@
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allArticles } from 'contentlayer/generated'
 import { genPageMetadata } from '@/app/seo'
-import ListLayout from '@/layouts/ListLayout'
+import ListLayout from '@/app/articles/components/ListLayout'
 
 const POSTS_PER_PAGE = 5
 const PAGE_NUMBER = 1

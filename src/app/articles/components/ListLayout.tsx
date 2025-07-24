@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 import type { Article } from 'contentlayer/generated'
@@ -9,68 +8,9 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import SectionContainer from '@/components/SectionContainer'
-import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
 import { AnimatePresence, motion } from 'motion/react'
 import { createFuzzyMatcher } from '@/utils'
-
-interface PaginationProps {
-  totalPages: number
-  currentPage: number
-}
-
-function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const pathname = usePathname()
-  const basePath = pathname
-    .replace(/^\//, '') // Remove leading slash
-    .replace(/\/page\/\d+\/?$/, '') // Remove any trailing /page
-    .replace(/\/$/, '') // Remove trailing slash
-  const prevPage = currentPage - 1 > 0
-  const nextPage = currentPage + 1 <= totalPages
-
-  return (
-    <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button
-            className="flex cursor-auto items-center gap-0.5 disabled:opacity-50"
-            disabled={!prevPage}
-          >
-            <MdArrowBackIosNew className="w-3" /> 이전
-          </button>
-        )}
-        {prevPage && (
-          <Link
-            className="flex items-center gap-0.5"
-            href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
-            rel="prev"
-          >
-            <MdArrowBackIosNew className="w-3" /> 이전
-          </Link>
-        )}
-        <span>
-          {currentPage} / {totalPages}
-        </span>
-        {!nextPage && (
-          <button
-            className="flex cursor-auto items-center gap-0.5 disabled:opacity-50"
-            disabled={!nextPage}
-          >
-            다음 <MdArrowForwardIos className="w-3" />
-          </button>
-        )}
-        {nextPage && (
-          <Link
-            className="flex items-center gap-0.5"
-            href={`/${basePath}/page/${currentPage + 1}`}
-            rel="next"
-          >
-            다음 <MdArrowForwardIos className="w-3" />
-          </Link>
-        )}
-      </nav>
-    </div>
-  )
-}
+import Pagination, { type PaginationProps } from './Pagination'
 
 const liVariants = {
   initialState: { opacity: 1, scale: 1 },
@@ -150,7 +90,7 @@ function ListLayout(props: Props) {
                 <motion.li
                   key={path}
                   layout
-                  className="bg-gray-950 py-4"
+                  className="bg-white-100 py-4 dark:bg-gray-950"
                   variants={liVariants}
                   initial={isInitial ? 'initialState' : 'enter'}
                   animate="animate"
