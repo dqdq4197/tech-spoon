@@ -1,0 +1,158 @@
+---
+title: 'React SSR에서 자주 발생하는 하이드레이션 오류, 왜 생기고 어떻게 해결할까?'
+date: '2025-07-26'
+tags: ['react', 'nextjs']
+draft: false
+summary: '블로그 포스팅에 필요한 헤더, 목록, 이미지, 표 등 모든 마크다운 문법을 정리한 치트시트입니다. GitHub Flavored Markdown을 기반으로 한 예시와 함께 쉽게 알아보세요.'
+images: ['markdown-guide_thumbnail']
+layout: PostSimple
+authors: ['heesu']
+---
+
+**React로** 서버 사이드 렌더링(SSR)을 구현할 때 가장 흔히 마주칠 수 있는 문제 중 하나가 바로 **하이드레이션(hydration)** 오류이다.
+
+이 글에서는 리액트의 하이드레이션 프로세스와 HTML 중첩 문제의 밀접한 관계를 설명하고, 자주 발생하는 실수 사례를 소개할 계획이다.
+
+## 하이드레이션(Hydration)이란?
+
+하이드레이션은 서버에서 미리 렌더링되어 클라이언트로 전송된 **정적인 HTML에 React 애플리케이션의 동적인 기능을 부여하는 과정**을 말한다.
+
+서버에서 생성된 HTML은 사용자가 즉시 내용을 볼 수 있게 해주지만, 아직 클릭이나 입력과 같은 상호작용(인터랙션)은 불가능한 상태이다. 이때 클라이언트로 전송된 React 자바스크립트 코드가 실행되면서, 서버에서 만들어진 실제 DOM 구조를 파악하고 그 위에 필요한 이벤트 핸들러를 덧붙여 완전한 인터랙티브 앱으로 변환된다.
+
+이 과정은 클라이언트가 DOM을 처음부터 다시 만드는 시간과 비용을 절약해주고, 서버가 제공한 HTML "스냅샷"을 먼저 보여줘 초기 로딩 속도 개선과 빠른 사용자 경험이라는 착시 효과를 만들어내는 장점이 있다.
+
+단, 서버 렌더링 결과와 클라이언트의 초기 렌더링 결과가 반드시 일치해야 하며, 그렇지 않으면 **하이드레이션 오류**가 발생할 수 있다.
+
+## 하이드레이션 오류
+
+[React 문서](https://18.react.dev/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html)에서 설명하는 하이드레이션 오류가 벌생하는 이유를 리스트업 해 보면 다음과 같다.
+
+- 루트 노드 안에 React가 생성한 HTML 요소 주변에 **줄바꿈이나 공백 같은 여분의 공백 문자**가 포함되어 있는 경우
+- `typeof window !== 'undefined'` 와 같은 렌더링 로직을 사용할 때
+- [`window.matchMedia`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) 와 같은 브라우저 전용 API를 렌더링 로직에 사용할 때
+- 클라이언트와 서버에서 서로 다른 데이터를 사용할 때
+
+그 외에도,
+
+- [브라우저 확장 프로그램](https://github.com/facebook/react/issues/24430)으로 인한 HTML 수정
+- 문법적으로 올바르지않은 방법으로 HTML을 작성한 경우
+
+이 중 몇 가지 사례를 조금 더 자세히 살펴보자.
+
+#### 문법적으로 올바르지않은 방법으로 HTML을 작성한 경우
+
+먼저, HTML의 허용되지 않는 태그 중첩 사용 예시를 살펴보자.
+
+```tsx
+/* ❌ 버튼 안에 버튼 */
+<button>
+  <button>중첩된 버튼</button>
+</button>
+
+/* ❌ 문단 안에 문단 */
+<p>
+  <p>중첩된 p태그</p>
+</p>
+
+/* ❌ 링크 안에 링크 */
+<a href="#">
+  <a href="#">중첩된 링크</a>
+</a>
+
+/* ❌ table은 특정 자식 구조만 허용 */
+<table>
+  <div>테이블 안의 div</div>
+</table>
+
+/* ❌ ul 직계 자식은 li여야 함 */
+<ul>
+  <div>리스트 아이템이 아닌 요소</div>
+</ul>
+```
+
+이처럼 문법적으로 잘못된 HTML 구조는 브라우저가 이를 자동으로 수정하거나 재해석하게 만들고, 이로 인해 서버에서 렌더링된 결과와 클라이언트 측 결과가 달라져 하이드레이션 오류가 발생할 수 있다.
+
+#### 클라이언트와 서버에서 서로 다른 데이터를 사용할 때
+
+`toLocaleDateString` 메서드는 **실행 환경의 locale과 timezone**에 따라 날짜를 각기 다른 형식의 문자열로 변환한다.
+
+```ts
+console.log(new Date().toLocaleDateString('de-DE'))
+// 26.7.2025
+
+console.log(new Date().toLocaleDateString('ar-EG'))
+// ٢٦‏/٧‏/٢٠٢٥
+
+console.log(new Date().toLocaleDateString(undefined))
+// 2025. 7. 26.
+```
+
+예를 들어, 아래와 같이 컴포넌트를 작성한 경우
+
+```tsx
+function App() {
+  return <h1>Current Date: {new Date().toLocaleDateString()}</h1>
+}
+```
+
+서버와 클라이언트의 locale이나 timezone 설정이 다르면 서로 다른 문자열이 렌더링될 수 있다.\
+이로 인해 React는 하이드레이션 과정에서 서버와 클라이언트의 출력이 일치하지 않음을 감지하고 경고를 발생시키게 된다.
+
+### suppressHydrationWarning 속성 사용
+
+단일 요소의 속성(attribute)이나 텍스트 콘텐츠가 서버와 클라이언트 간에 불가피하게 달라지는 경우, 해당 요소에 `suppressHydrationWarning={true}` 속성을 추가하면 하이드레이션 불일치에 대한 경고를 무시할 수 있다.
+
+```diff-tsx
+function App() {
+  return (
++   <h1 suppressHydrationWarning={true}>
+      Current Date: {new Date().toLocaleDateString()}
+    </h1>
+  )
+}
+```
+
+이는 ESLint 경고를 일부러 무시할 때 사용하는 `eslint-ignore` 주석과 비슷한 개념으로, 자신이 무엇을 하고 있는지 잘 알고 있을 때만 사용하는 것이 좋다.
+그리고, 이 기능은 오직 한 단계 깊이 단일 요소에만 동작하며, 디버깅을 어렵게 만들 수 있으니 남용하지 않는 것이 좋다.
+
+그렇다면 이를 위해서는 무엇을 더 해볼 수 있을까?
+
+### 클라이언트에서 두 번 렌더링하는 방법
+
+문서에서 안내하는 방법 중 하나는 클라이언트에서 두 번 렌더링하는 방식이다.
+
+```tsx {4-10}
+import { useState, useEffect } from 'react'
+
+function App() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  return isClient ? <ActualContent /> : null
+}
+```
+
+Effect는 서버에서 실행되지 않기 때문에, 클라이언트에서는 첫 렌더링 싸이클에서 서버와 동일한 상태 값을 사용하게 된다.\
+즉, 서버에서 생성된 정적 HTML과 클라이언트의 첫 번째 렌더링 결과가 일치하도록 보장함으로써 하이드레이션 오류를 방지하는 것이다.
+Hydration 이후에 Effect가 동작하며, 이를 통해 클라이언트 측에서 한 번 렌더링이 발생하고, 최종적으로 원하는 화면이 완성된다.
+
+이 패턴은 React에서 꽤 일반적으로 사용된다.
+컴포넌트가 서버에서 렌더링될 때 이중 렌더링은 비효율적으로 보일 수 있지만, 정확한 클라이언트-서버 동기화를 위한 필연적인 과정이다.
+
+하지만 SSR 앱이라고 해서 모든 페이지가 항상 서버에서 렌더링되는 것은 아니다.
+일반적으로는 최초 진입한 페이지에 대해서만 서버에서 정적 마크업을 생성하고, 이후의 페이지 전환은 SPA처럼 클라이언트 측에서 처리된다.
+
+이러한 상황에서 앞서 소개한 "**클라이언트에서 두 번 렌더링하는 방법**"은 useEffect로 인해 불필요한 성능 저하를 유발할 수 있다.
+이미 클라이언트 환경에서 실행 중임에도 불구하고, 항상 null을 먼저 렌더링한 뒤 useEffect를 통해 실제 콘텐츠를 다시 렌더링하게 된다.
+
+### useSyncExternalStore를 활용한 방법
+
+이 방법은 직전에 소개한 방법의 단점을 많이 보완할 수 있다.
+
+# Reference
+
+- https://18.react.dev/reference/react-dom/client/hydrateRoot
+- https://tkdodo.eu/blog/avoiding-hydration-mismatches-with-use-sync-external-store
