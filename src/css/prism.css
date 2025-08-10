@@ -140,3 +140,7 @@
 .token.table {
   display: inline;
 }
+
+.markdown-alert .markdown-alert-title {
+  font-weight: 700;
+}
