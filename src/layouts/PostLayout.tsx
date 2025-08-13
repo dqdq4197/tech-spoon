@@ -9,10 +9,10 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import CldImage from '@/components/CldImage'
+import { MdArrowBackIosNew, MdEmail } from 'react-icons/md'
+import { Github } from '@/components/social-icons/icons'
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -29,7 +29,8 @@ interface LayoutProps {
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
+function PostLayout(props: LayoutProps) {
+  const { content, authorDetails, next, prev, children } = props
   const { filePath, path, slug, date, title, tags } = content
   const basePath = path.split('/')[0]
 
@@ -61,29 +62,57 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <dd>
                 <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
                   {authorDetails.map((author) => (
-                    <li className="flex items-center space-x-2" key={author.name}>
-                      {author.avatar && (
-                        <CldImage
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
+                    <li className="space-y-4" key={author.name}>
+                      <div className="flex items-center space-x-2">
+                        {author.avatar && (
+                          <CldImage
+                            src={author.avatar}
+                            width={38}
+                            height={38}
+                            alt="avatar"
+                            className="h-10 w-10 rounded-full"
+                          />
+                        )}
+                        <dl className="typo-body1 whitespace-nowrap">
+                          <dt className="sr-only">Name</dt>
+                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                          <dt className="sr-only">Twitter</dt>
+                          <dd>
+                            {author.twitter && (
+                              <Link
+                                href={author.twitter}
+                                className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
+                              >
+                                {author.twitter
+                                  .replace('https://twitter.com/', '@')
+                                  .replace('https://x.com/', '@')}
+                              </Link>
+                            )}
+                          </dd>
+                        </dl>
+                      </div>
+                      <dl>
+                        <dt className="sr-only">Github</dt>
+                        <dd className="flex items-center gap-2">
+                          <Github className="size-4 fill-current text-gray-700 dark:text-gray-200" />
+                          {author.github && (
                             <Link
-                              href={author.twitter}
+                              href={author.github}
                               className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
                             >
-                              {author.twitter
-                                .replace('https://twitter.com/', '@')
-                                .replace('https://x.com/', '@')}
+                              {author.github.replace('https://github.com/', '')}
+                            </Link>
+                          )}
+                        </dd>
+                        <dt className="sr-only">Email</dt>
+                        <dd className="flex items-center gap-2">
+                          <MdEmail className="size-4 fill-current text-gray-700 dark:text-gray-200" />
+                          {author.email && (
+                            <Link
+                              href={`mailto:${author.email}`}
+                              className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
+                            >
+                              {author.email}
                             </Link>
                           )}
                         </dd>
@@ -95,12 +124,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             </dl>
             <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
-              <div className="pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={discussUrl(path)} rel="nofollow">
-                  Discuss on Twitter
-                </Link>
-                {` • `}
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
+              <div className="typo-body2 pt-6 pb-6 text-gray-700 dark:text-gray-300">
+                <Link href={editUrl(filePath)}>GitHub에서 보기</Link>
               </div>
               <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300" id="comment">
                 <Comments slug={slug} />
@@ -110,8 +135,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
                 {tags && (
                   <div className="py-4 xl:py-8">
-                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                      Tags
+                    <h2 className="typo-body4 tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                      태그
                     </h2>
                     <div className="flex flex-wrap">
                       {tags.map((tag) => (
@@ -125,7 +150,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     {prev && prev.path && (
                       <div>
                         <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Previous Article
+                          이전 아티클
                         </h2>
                         <div className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95">
                           <Link href={`/${prev.path}`}>{prev.title}</Link>
@@ -135,7 +160,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     {next && next.path && (
                       <div>
                         <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Next Article
+                          다음 아티클
                         </h2>
                         <div className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95">
                           <Link href={`/${next.path}`}>{next.title}</Link>
@@ -148,10 +173,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <div className="pt-4 xl:pt-8">
                 <Link
                   href={`/${basePath}`}
-                  className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
+                  className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95 flex items-center gap-2"
                   aria-label="Back to the blog"
                 >
-                  &larr; Back to the blog
+                  <MdArrowBackIosNew className="w-3" /> 모든 아티클로 이동
                 </Link>
               </div>
             </footer>
@@ -161,3 +186,5 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
     </SectionContainer>
   )
 }
+
+export default PostLayout
