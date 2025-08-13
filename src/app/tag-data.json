@@ -3,6 +3,8 @@
   "next-js": 6,
   "tailwind": 3,
   "feature": 2,
+  "nextjs": 2,
+  "react": 2,
   "react-native": 2,
   "사이드-프로젝트": 1,
   "book": 1,
@@ -16,9 +18,7 @@
   "markdown": 1,
   "math": 1,
   "multi-author": 1,
-  "nextjs": 1,
   "ols": 1,
-  "react": 1,
   "reflection": 1,
   "typescript": 1,
   "writings": 1
