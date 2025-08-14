@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { LuGithub } from 'react-icons/lu'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 import type { Article, Author } from 'contentlayer/generated'
 import Comments from '@/components/Comments'
@@ -9,8 +10,11 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import CldImage from '@/components/CldImage'
-import { MdArrowBackIosNew, MdEmail } from 'react-icons/md'
-import { Github } from '@/components/social-icons/icons'
+import { MdArrowBackIosNew, MdSchedule } from 'react-icons/md'
+import { MdOutlineMailOutline } from 'react-icons/md'
+import Stack from '@/components/Stack'
+import { formatReadingTime } from '@/app/components/MasonryArticleList/utils'
+import TextButton from '@/components/TextButton'
 
 const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 
@@ -31,30 +35,37 @@ interface LayoutProps {
 
 function PostLayout(props: LayoutProps) {
   const { content, authorDetails, next, prev, children } = props
-  const { filePath, path, slug, date, title, tags } = content
-  const basePath = path.split('/')[0]
+  const { filePath, slug, date, title, tags, readingTime } = content
+  const formattedReadingTime = formatReadingTime(readingTime)
 
   return (
     <SectionContainer>
       <ScrollTopAndComment />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
-              <dl className="space-y-10">
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
+          <header className="space-y-1 pt-6 text-center xl:pb-6">
+            <Stack
+              as="dl"
+              className="typo-body2 sm:typo-body1 flex-row justify-center text-gray-500 dark:text-gray-400"
+              divider={<span className="px-2"> · </span>}
+            >
               <div>
-                <PageTitle>{title}</PageTitle>
+                <dt className="sr-only">Published on</dt>
+                <dd>
+                  <time dateTime={date}>
+                    {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                  </time>
+                </dd>
               </div>
-            </div>
+              <div>
+                <dt className="sr-only">reading time</dt>
+                <dd className="flex items-center gap-1">
+                  <MdSchedule className="size-3.5" />
+                  <span>{formattedReadingTime}</span>
+                </dd>
+              </div>
+            </Stack>
+            <PageTitle>{title}</PageTitle>
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
             <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
@@ -73,50 +84,57 @@ function PostLayout(props: LayoutProps) {
                             className="h-10 w-10 rounded-full"
                           />
                         )}
-                        <dl className="typo-body1 whitespace-nowrap">
-                          <dt className="sr-only">Name</dt>
-                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                          <dt className="sr-only">Twitter</dt>
-                          <dd>
-                            {author.twitter && (
-                              <Link
-                                href={author.twitter}
-                                className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
-                              >
-                                {author.twitter
-                                  .replace('https://twitter.com/', '@')
-                                  .replace('https://x.com/', '@')}
-                              </Link>
-                            )}
-                          </dd>
+                        <dl className="space-y-0.5 whitespace-nowrap">
+                          <Stack className="flex-row space-x-1 text-gray-900 dark:text-gray-100">
+                            <div>
+                              <dt className="sr-only">Name</dt>
+                              <dd className="typo-body2 md:typo-body1">{author.name}</dd>
+                            </div>
+                            <div>
+                              <dt className="sr-only">Twitter</dt>
+                              <dd>
+                                {author.twitter && (
+                                  <Link
+                                    href={author.twitter}
+                                    className="typo-body2 text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
+                                  >
+                                    {author.twitter
+                                      .replace('https://twitter.com/', '@')
+                                      .replace('https://x.com/', '@')}
+                                  </Link>
+                                )}
+                              </dd>
+                            </div>
+                          </Stack>
+                          <Stack className="typo-body4 text-grey-100 dark:text-grey-20 flex-row gap-1 xl:flex-col">
+                            <div>
+                              <dt className="sr-only">Email</dt>
+                              {author.email && (
+                                <dd>
+                                  <Link
+                                    href={`mailto:${author.email}`}
+                                    className="flex items-center gap-1"
+                                  >
+                                    <MdOutlineMailOutline className="size-4" />
+                                    {author.email}
+                                  </Link>
+                                </dd>
+                              )}
+                            </div>
+                            <div>
+                              <dt className="sr-only">Github</dt>
+                              {author.github && (
+                                <dd>
+                                  <Link href={author.github} className="flex items-center gap-1">
+                                    <LuGithub className="size-4" />
+                                    {author.github.replace('https://github.com/', '')}
+                                  </Link>
+                                </dd>
+                              )}
+                            </div>
+                          </Stack>
                         </dl>
                       </div>
-                      <dl>
-                        <dt className="sr-only">Github</dt>
-                        <dd className="flex items-center gap-2">
-                          <Github className="size-4 fill-current text-gray-700 dark:text-gray-200" />
-                          {author.github && (
-                            <Link
-                              href={author.github}
-                              className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
-                            >
-                              {author.github.replace('https://github.com/', '')}
-                            </Link>
-                          )}
-                        </dd>
-                        <dt className="sr-only">Email</dt>
-                        <dd className="flex items-center gap-2">
-                          <MdEmail className="size-4 fill-current text-gray-700 dark:text-gray-200" />
-                          {author.email && (
-                            <Link
-                              href={`mailto:${author.email}`}
-                              className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95"
-                            >
-                              {author.email}
-                            </Link>
-                          )}
-                        </dd>
-                      </dl>
                     </li>
                   ))}
                 </ul>
@@ -171,13 +189,11 @@ function PostLayout(props: LayoutProps) {
                 )}
               </div>
               <div className="pt-4 xl:pt-8">
-                <Link
-                  href={`/${basePath}`}
-                  className="text-brand-100 hover:text-brand-105 dark:hover:text-brand-95 flex items-center gap-2"
-                  aria-label="Back to the blog"
-                >
-                  <MdArrowBackIosNew className="w-3" /> 모든 아티클로 이동
-                </Link>
+                <TextButton asChild className="typo-body1" startIcon={<MdArrowBackIosNew />}>
+                  <Link href="/articles" aria-label="All articles">
+                    모든 아티클로 이동
+                  </Link>
+                </TextButton>
               </div>
             </footer>
           </div>
