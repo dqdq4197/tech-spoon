@@ -7,6 +7,7 @@ import MasonryArticleList from './components/MasonryArticleList'
 import Link from '@/components/Link'
 import { MdArrowForwardIos } from 'react-icons/md'
 import TextButton from '@/components/TextButton'
+import { IcDualUnderline } from 'public/static/icons/Underline'
 
 async function Page() {
   const sortedArticles = sortPosts(allArticles)
@@ -14,11 +15,14 @@ async function Page() {
 
   return (
     <SectionContainer>
-      <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+      <div className="space-y-5 pt-6 pb-8">
         <PulsingBlobs />
-        <p className="typo-body1 text-greyOpacity-80 dark:text-white-80">
-          {siteMetadata.description}
-        </p>
+        <div className="inline-block">
+          <p className="typo-body1 text-grey-100 dark:text-white-80 sm:text-lg">
+            {siteMetadata.description}
+          </p>
+          <IcDualUnderline className="text-greyOpacity-40 dark:text-greyOpacity-80 w-full" />
+        </div>
         <MasonryArticleList articles={articles} />
       </div>
       <div className="flex justify-end">
