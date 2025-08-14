@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <nav
       className={cn(
-        'fixed z-30 flex h-[3.75rem] w-full justify-center border-b border-transparent bg-white/5 backdrop-blur-md dark:bg-gray-950/5',
+        'bg-white-30 fixed z-30 flex h-[3.75rem] w-full justify-center border-b border-transparent backdrop-blur-md dark:bg-gray-950/5',
         { 'border-gray-950/5 dark:border-white/10': isScrolled }
       )}
     >
