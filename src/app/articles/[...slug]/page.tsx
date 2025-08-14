@@ -12,6 +12,7 @@ import PostBanner from '@/layouts/PostBanner'
 import type { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
+import { resolveAuthors } from '@/utils'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -94,10 +95,7 @@ async function Page(props: Props) {
   const next = sortedCoreContents[postIndex - 1]
   const post = allArticles.find((p) => p.slug === slug) as Article
   const authorList = post?.authors || ['default']
-  const authorDetails = authorList.map((author) => {
-    const authorResults = allAuthors.find((p) => p.slug === author)
-    return coreContent(authorResults as Author)
-  })
+  const authorDetails = resolveAuthors(authorList)
   const mainContent = coreContent(post)
   const jsonLd = post.structuredData
   jsonLd['author'] = authorDetails.map((author) => {

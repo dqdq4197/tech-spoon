@@ -1,7 +1,7 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'Tech Spoon',
-  author: 'heesu',
+  author: 'Heesu Choi',
   description: '크게 한 스푼 담은, 소화 잘 되는 기술 이야기',
   language: 'ko',
   siteUrl: 'https://www.tech-spoon.me',
