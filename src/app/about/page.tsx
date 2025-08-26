@@ -7,7 +7,7 @@ import { resolveAuthors } from '@/utils'
 export const metadata = genPageMetadata({ title: 'About' })
 
 function Page() {
-  const author = resolveAuthors(['Heesu Choi'])[0]
+  const author = resolveAuthors(['heesu'])[0]
   const mainContent = coreContent(author)
 
   return (

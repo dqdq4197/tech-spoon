@@ -3,8 +3,7 @@ import { expectUnreachable } from './sweet'
 
 function getAnonymousAuthor(): Author {
   return (
-    allAuthors.find((a) => a.name === 'anonymous') ??
-    expectUnreachable('anonymous author not found')
+    allAuthors.find((a) => a.id === 'anonymous') ?? expectUnreachable('anonymous author not found')
   )
 }
 
@@ -13,8 +12,8 @@ function resolveAuthors(authors: string[]): Author[] {
     return [getAnonymousAuthor()]
   }
 
-  return authors.map((authorName) => {
-    const author = allAuthors.find((author) => author.name === authorName)
+  return authors.map((authorId) => {
+    const author = allAuthors.find((author) => author.id === authorId)
 
     if (author === undefined) {
       return getAnonymousAuthor()
