@@ -113,10 +113,10 @@ const questions: PromptObject[] = [
 ]
 
 function writeArticleFile(answers: prompts.Answers<string>) {
-  const { slug } = answers
+  const { slug, ...metaData } = answers
   const fileName = `${slug}.mdx`
   const filePath = path.join('data', 'articles', fileName)
-  const frontmatter = formatFrontmatter(answers)
+  const frontmatter = formatFrontmatter(metaData)
 
   const content = `${frontmatter}
 여기 아티클 본문을 작성하세요!
