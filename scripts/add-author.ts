@@ -4,6 +4,8 @@ import prompts, { type PromptObject } from 'prompts'
 import kleur from 'kleur'
 import formatFrontmatter from '@/utils/formatFrontmatter'
 
+const LINKEDIN_REGEX = /^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/([A-Za-z0-9_.-]+)\/?$/
+
 const questions: PromptObject[] = [
   {
     type: 'text',
@@ -64,15 +66,40 @@ const questions: PromptObject[] = [
     name: 'githubId',
     message: 'GitHub ID를 입력하세요 (선택 사항)',
   },
+  {
+    type: 'text',
+    name: 'linkedin',
+    message: 'LinkedIn 프로필 URL을 입력하세요 (선택 사항)',
+    validate: (value) => {
+      if (!value) {
+        return true
+      }
+
+      return (
+        LINKEDIN_REGEX.test(value) ||
+        '올바른 LinkedIn 프로필 URL을 입력하세요 (예: https://www.linkedin.com/in/username)'
+      )
+    },
+    format: (value) => {
+      if (!value) {
+        return ''
+      }
+
+      const [, username] = value.match(LINKEDIN_REGEX)
+      return `https://www.linkedin.com/in/${username}`
+    },
+  },
 ]
 
 function writeAuthorFile(answers: prompts.Answers<string>) {
-  const { id, githubId, ...metaData } = answers
+  const { name, id, githubId, linkedin, ...metaData } = answers
 
   const frontmatter = formatFrontmatter({
-    ...metaData,
+    name,
     id,
+    ...metaData,
     github: githubId ? `https://github.com/${githubId}` : undefined,
+    linkedin,
   })
   const content = `${frontmatter}
 간단한 소개를 Markdown 형식으로 작성해 보세요!
