@@ -4,8 +4,8 @@ import 'katex/dist/katex.css'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer'
-import { allArticles, allAuthors } from 'contentlayer/generated'
-import type { Author, Article } from 'contentlayer/generated'
+import { allArticles } from 'contentlayer/generated'
+import type { Article } from 'contentlayer/generated'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
@@ -13,6 +13,7 @@ import type { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
 import { resolveAuthors } from '@/utils'
+import { getCldOgImageUrl } from 'next-cloudinary'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -21,40 +22,36 @@ const layouts = {
   PostBanner,
 }
 
-export async function generateMetadata(props: {
+interface Props {
   params: Promise<{ slug: string[] }>
-}): Promise<Metadata | undefined> {
+}
+
+export async function generateMetadata(props: Props): Promise<Metadata | undefined> {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
-  const post = allArticles.find((p) => p.slug === slug)
-  const authorList = post?.authors || ['default']
-  const authorDetails = authorList.map((author) => {
-    const authorResults = allAuthors.find((p) => p.slug === author)
-    return coreContent(authorResults as Author)
-  })
+  const post = allArticles.find((article) => article.slug === slug)
+
   if (!post) {
     return
   }
 
-  const publishedAt = new Date(post.date).toISOString()
-  const modifiedAt = new Date(post.lastmod || post.date).toISOString()
-  const authors = authorDetails.map((author) => author.name)
-  let imageList = [siteMetadata.socialBanner]
-  if (post.images) {
-    imageList = typeof post.images === 'string' ? [post.images] : post.images
-  }
-  const ogImages = imageList.map((img) => {
-    return {
-      url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
-  })
+  const { title, summary: description, authors, images, date, lastmod } = post
+  const authorDetails = resolveAuthors(authors || [])
+  const publishedAt = new Date(date).toISOString()
+  const modifiedAt = new Date(lastmod || date).toISOString()
+  const authorNames = authorDetails.map((author) => author.name)
+
+  const imageUrls = images?.map((image) => getCldOgImageUrl({ src: image })) || [
+    siteMetadata.socialBanner,
+  ]
+  const ogImages = imageUrls.map((image) => ({ url: image }))
 
   return {
-    title: post.title,
-    description: post.summary,
+    title,
+    description,
     openGraph: {
-      title: post.title,
-      description: post.summary,
+      title,
+      description,
       siteName: siteMetadata.title,
       locale: 'ko',
       type: 'article',
@@ -62,23 +59,21 @@ export async function generateMetadata(props: {
       modifiedTime: modifiedAt,
       url: './',
       images: ogImages,
-      authors: authors.length > 0 ? authors : [siteMetadata.author],
+      authors: authorNames.length > 0 ? authorNames : [siteMetadata.author],
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.summary,
-      images: imageList,
+      title,
+      description,
+      images: imageUrls,
     },
   }
 }
 
 export const generateStaticParams = async () => {
-  return allArticles.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
-}
-
-interface Props {
-  params: Promise<{ slug: string[] }>
+  return allArticles.map((article) => ({
+    slug: article.slug.split('/').map(decodeURI),
+  }))
 }
 
 async function Page(props: Props) {
@@ -87,6 +82,7 @@ async function Page(props: Props) {
   // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allArticles))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
+
   if (postIndex === -1) {
     return notFound()
   }
@@ -94,8 +90,7 @@ async function Page(props: Props) {
   const prev = sortedCoreContents[postIndex + 1]
   const next = sortedCoreContents[postIndex - 1]
   const post = allArticles.find((p) => p.slug === slug) as Article
-  const authorList = post?.authors || ['default']
-  const authorDetails = resolveAuthors(authorList)
+  const authorDetails = resolveAuthors(post?.authors || [])
   const mainContent = coreContent(post)
   const jsonLd = post.structuredData
   jsonLd['author'] = authorDetails.map((author) => {
