@@ -6,15 +6,14 @@ const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-// You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
-  style-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com giscus.app https://fonts.googleapis.com https://unpkg.com https://va.vercel-scripts.com https://vercel.live;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src * blob: data:;
-  media-src *.s3.amazonaws.com;
+  media-src res.cloudinary.com;
   connect-src *;
-  font-src 'self';
+  font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com data:;
   frame-src giscus.app
 `
 
