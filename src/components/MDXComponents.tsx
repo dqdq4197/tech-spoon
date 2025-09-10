@@ -6,10 +6,12 @@ import Image from './Image'
 import CustomLink from './Link'
 import TableWrapper from './TableWrapper'
 import CldImage from './CldImage'
+import CldVideoPlayer from './CldVideoPlayer'
 
 export const components: MDXComponents = {
   Image,
   CldImage,
+  CldVideoPlayer,
   TOCInline,
   a: CustomLink,
   pre: Pre,

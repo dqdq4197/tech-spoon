@@ -1,7 +1,7 @@
 ---
 title: 'tech spoon 블로그 마크다운 가이드'
 date: '2025-07-17'
-lastmod: '2025-09-01'
+lastmod: '2025-09-10'
 tags: ['guide']
 draft: false
 summary: '블로그 포스팅에 필요한 헤더, 목록, 이미지, 표 등 모든 마크다운 문법을 정리한 치트시트입니다. GitHub Flavored Markdown을 기반으로 한 예시와 함께 쉽게 알아보세요.'
@@ -182,9 +182,38 @@ Will span two lines
 
 부가적인 기능은 [해당 문서](https://next.cloudinary.dev/cldimage/basic-usage)를 참고해 주세요.
 
+## 비디오 (Video)
+
+비디오를 삽입하려면 `CldVideoPlayer` 컴포넌트를 사용하세요.
+
+먼저 비디오 파일을 tech-spoon Cloudinary 저장소에 업로드한 뒤, 컴포넌트의 `src` prop에 Public ID 또는 Cloudinary URL을 전달하면 됩니다.
+
+```tsx
+<CldVideoPlayer src="samples/elephants" width="450" height="253" />
+```
+
+<CldVideoPlayer src="samples/elephants" width="450" height="253" />
+
+#### GIF처럼 사용하기
+
+`CldImage` 컴포넌트로 gif를 표시할 수도 있지만, 최대 렌더링 크기가 0.5MP로 제한되어 있어 긴 gif는 지원되지 않습니다.
+
+이 경우 `CldVideoPlayer`에 `likeGif` prop을 추가하면, 비디오를 gif처럼 재생할 수 있습니다.
+
+```diff-tsx
+<CldVideoPlayer
+  src="samples/elephants"
+  width="450"
+  height="253"
++ likeGif
+/>
+```
+
+<CldVideoPlayer src="samples/elephants" width="450" height="253" likeGif />
+
 ## 링크 (Links)
 
-```
+```mdx
 http://github.com - URL을 그대로 넣으면 자동으로 링크가 됩니다.
 [GitHub](http://github.com)
 ```
@@ -194,7 +223,7 @@ http://github.com - URL을 그대로 넣으면 자동으로 링크가 됩니다.
 
 ## 인용문 (Blockquotes)
 
-```
+```mdx
 카니예 웨스트(Kanye West)는 이렇게 말했습니다:
 
 > 우리는 미래를 살고 있기에,
@@ -220,7 +249,7 @@ http://github.com - URL을 그대로 넣으면 자동으로 링크가 됩니다.
 
 #### 코드 제목과 함께 표시
 
-````
+````mdx
 ```js:fancyAlert.js
 function fancyAlert(arg) {
   if (arg) {
@@ -240,7 +269,7 @@ function fancyAlert(arg) {
 
 #### 특정 줄 하이라이트 및 줄 번호 표시
 
-````
+````mdx
 ```js {1,3-4} showLineNumbers
 function fancyAlert(arg) {
   if (arg) {
@@ -260,7 +289,7 @@ function fancyAlert(arg) {
 
 #### 차이점 강조 (Diff)
 
-````
+````mdx
 ```diff-js
 function fancyAlert(arg) {
   if (arg) {

@@ -128,6 +128,9 @@
     & :where(code):not(pre code) {
       color: var(--color-indigo-500);
     }
+    & :where(video) {
+      margin: 0px;
+    }
   }
   .prose-invert {
     & a {

@@ -26,7 +26,7 @@
 }
 
 .code-line.inserted {
-  @apply bg-green-500/20;
+  @apply bg-green-400/17;
 }
 
 .code-line.deleted {

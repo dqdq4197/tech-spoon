@@ -13,7 +13,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { ReactNode } from 'react'
 
 const space_grotesk = IBM_Plex_Sans_KR({
-  weight: ['400'],
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-ibm-plex-sans',
