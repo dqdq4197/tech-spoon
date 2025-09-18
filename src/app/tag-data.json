@@ -6,7 +6,9 @@
   "react": 2,
   "사이드-프로젝트": 1,
   "async-storage": 1,
+  "bitbucket": 1,
   "canada": 1,
+  "cicd": 1,
   "code": 1,
   "feature": 1,
   "features": 1,
@@ -20,5 +22,6 @@
   "redux-persist": 1,
   "redux-toolkit": 1,
   "tailwindcss": 1,
+  "trunk-based-development": 1,
   "typescript": 1
 }
