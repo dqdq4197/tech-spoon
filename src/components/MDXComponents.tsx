@@ -7,6 +7,7 @@ import CustomLink from './Link'
 import TableWrapper from './TableWrapper'
 import CldImage from './CldImage'
 import CldVideoPlayer from './CldVideoPlayer'
+import Accordion from './Accordion'
 
 export const components: MDXComponents = {
   Image,
@@ -17,4 +18,5 @@ export const components: MDXComponents = {
   pre: Pre,
   table: TableWrapper,
   BlogNewsletterForm,
+  Accordion,
 }
