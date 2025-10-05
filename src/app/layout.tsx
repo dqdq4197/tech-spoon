@@ -76,6 +76,7 @@ function RootLayout(props: Props) {
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+      <meta name="naver-site-verification" content="5b3850ace6a78d2a7affca5bd04e3307392ba9c7" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
         <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
