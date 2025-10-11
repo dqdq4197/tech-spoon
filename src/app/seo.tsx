@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 
-interface PageSEOProps {
+interface PageSEOProps extends Metadata {
   title: string
-  description?: string
   image?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
 }
 
-export function genPageMetadata({ title, description, image, ...rest }: PageSEOProps): Metadata {
+export function genPageMetadata(props: PageSEOProps): Metadata {
+  const { title, description, image, ...metaDataProps } = props
+
   return {
     title,
     description: description || siteMetadata.description,
@@ -27,6 +26,6 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
       card: 'summary_large_image',
       images: image ? [image] : [siteMetadata.socialBanner],
     },
-    ...rest,
+    ...metaDataProps,
   }
 }
