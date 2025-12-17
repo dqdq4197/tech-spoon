@@ -43,10 +43,10 @@ function PostLayout(props: LayoutProps) {
       <ScrollTopAndComment />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="space-y-1 pt-6 text-center xl:pb-6">
+          <header className="space-y-1 pt-6 xl:pb-6">
             <Stack
               as="dl"
-              className="typo-body2 sm:typo-body1 flex-row justify-center text-gray-500 dark:text-gray-400"
+              className="typo-body2 sm:typo-body1 flex-row text-gray-500 dark:text-gray-400"
               divider={<span className="px-2"> · </span>}
             >
               <div>
@@ -71,7 +71,7 @@ function PostLayout(props: LayoutProps) {
             <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
               <dt className="sr-only">Authors</dt>
               <dd>
-                <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
+                <ul className="flex flex-wrap gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
                   {authorDetails.map((author) => (
                     <li className="space-y-4" key={author.name}>
                       <div className="flex items-center space-x-2">

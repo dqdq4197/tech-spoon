@@ -28,7 +28,7 @@ function PostBanner({ content, next, prev, children }: LayoutProps) {
       <ScrollTopAndComment />
       <article>
         <div>
-          <div className="space-y-1 pb-10 text-center dark:border-gray-700">
+          <div className="space-y-1 pb-10 dark:border-gray-700">
             <div className="w-full">
               <Bleed>
                 <div className="relative aspect-2/1 w-full md:aspect-[2.5/1]">
