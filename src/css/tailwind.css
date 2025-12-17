@@ -13,7 +13,7 @@
  * @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
  */
 @theme {
-  --font-sans: var(--font-ibm-plex-sans), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+  --font-sans: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   --color-brand-5: oklch(98% 0.05 266.3);

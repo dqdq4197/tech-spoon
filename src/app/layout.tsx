@@ -1,7 +1,7 @@
 import '@/css/tailwind.css'
 import 'remark-github-blockquote-alert/alert.css'
 
-import { IBM_Plex_Sans_KR } from 'next/font/google'
+import localFont from 'next/font/local'
 import { Analytics, type AnalyticsConfig } from 'pliny/analytics'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
@@ -12,11 +12,11 @@ import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { ReactNode } from 'react'
 
-const space_grotesk = IBM_Plex_Sans_KR({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
   display: 'swap',
-  variable: '--font-ibm-plex-sans',
+  weight: '45 920',
+  variable: '--font-pretendard',
 })
 
 export const metadata: Metadata = {
@@ -67,7 +67,7 @@ function RootLayout(props: Props) {
   const { children } = props
 
   return (
-    <html lang={siteMetadata.language} className={space_grotesk.variable} suppressHydrationWarning>
+    <html lang={siteMetadata.language} className={pretendard.variable} suppressHydrationWarning>
       <link rel="apple-touch-icon" sizes="76x76" href="/static/favicons/apple-touch-icon.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
       <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
