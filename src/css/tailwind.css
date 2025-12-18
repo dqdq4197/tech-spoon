@@ -110,6 +110,7 @@
 @layer utilities {
   .prose {
     & a {
+      text-decoration: none;
       color: var(--color-brand-100);
       &:hover {
         color: var(--color-brand-105);
@@ -126,7 +127,14 @@
       font-weight: 600;
     }
     & :where(code):not(pre code) {
-      color: var(--color-indigo-500);
+      @apply rounded-sm border-1 px-1 py-0.5 text-[85%] font-[weight:inherit];
+      @apply bg-greyOpacity-5 border-grey-10;
+      @apply dark:bg-greyOpacity-60 dark:border-gray-700;
+    }
+    /* tailwind-typography inline code backticks 제거 */
+    & :where(code):not(pre code)::before,
+    & :where(code):not(pre code)::after {
+      content: none;
     }
     & :where(video) {
       margin: 0px;
@@ -144,6 +152,10 @@
     }
     & :where(h1, h2, h3, h4, h5, h6) {
       color: var(--color-gray-100);
+    }
+    & :where(code):not(pre code)::before,
+    & :where(code):not(pre code)::after {
+      content: none;
     }
   }
 }
