@@ -8,13 +8,23 @@ const withBundleAnalyzer = createBundleAnalyzer({
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com giscus.app https://fonts.googleapis.com https://unpkg.com https://va.vercel-scripts.com https://vercel.live;
+  script-src
+    'self'
+    'unsafe-eval'
+    'unsafe-inline'
+    https://www.googletagmanager.com
+    giscus.app
+    https://fonts.googleapis.com
+    https://unpkg.com
+    https://va.vercel-scripts.com
+    https://vercel.live
+    https://static.cloudflareinsights.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src * blob: data:;
   media-src res.cloudinary.com;
   connect-src *;
   font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com data:;
-  frame-src giscus.app
+  frame-src giscus.app;
 `
 
 const securityHeaders = [
