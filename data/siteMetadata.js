@@ -8,7 +8,7 @@ const siteMetadata = {
   siteRepo: 'https://github.com/dqdq4197/tech-spoon',
   socialBanner: `/static/images/brand/banner.png`,
   email: 'contact@tech-spoon.me',
-  github: 'https://github.com/dqdq4197/tech-spoon',
+  github: 'https://github.com/dqdq4197',
   locale: 'ko',
   analytics: {
     googleAnalytics: {

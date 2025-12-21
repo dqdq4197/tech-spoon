@@ -1,6 +1,8 @@
 import Link from './Link'
 import siteMetadata from '@/data/siteMetadata'
 import SocialIcon from '@/components/social-icons'
+import Stack from './Stack'
+import { MdOutlineRssFeed } from 'react-icons/md'
 
 function Footer() {
   return (
@@ -9,13 +11,18 @@ function Footer() {
         <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
         <SocialIcon kind="github" href={siteMetadata.github} size={6} />
       </div>
-      <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
-        <div>{siteMetadata.author}</div>
-        <div>{` • `}</div>
-        <div>{`© ${new Date().getFullYear()}`}</div>
-        <div>{` • `}</div>
+      <Stack
+        className="mb-2 flex flex-row space-x-2 text-sm text-gray-500 dark:text-gray-400"
+        divider={<span>{` • `}</span>}
+      >
+        <Link href={siteMetadata.github}>{siteMetadata.author}</Link>
+        <span>{`© ${new Date().getFullYear()}`}</span>
         <Link href="/">{siteMetadata.title}</Link>
-      </div>
+        <Stack as={Link} target="_blank" href="/feed.xml" className="flex-row items-center gap-1">
+          <MdOutlineRssFeed />
+          <span>rss</span>
+        </Stack>
+      </Stack>
     </footer>
   )
 }
